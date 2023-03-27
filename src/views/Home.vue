@@ -14,7 +14,7 @@
                       <input type="search" id="from" class="form-control" v-model="address" maxlength="42" disabled>
                     </div>
                     <div class="col col-auto">
-                      <b-button variant="primary" @click="connectWallet()"
+                      <b-button class="connect-btn" variant="primary" @click="connectWallet()"
                         :disabled="connecting">
                         {{ connected ? 'Connected' : 'Connect Wallet' }}
                       </b-button>
@@ -109,11 +109,9 @@
               <b>From</b>
             </b-col>
             <div class="col">
-              Please use a wallet that supports the EOS network, such as Anchor, Wombat, Tokenpocket
-              er a centralized exchange such as Binance, Coinbase, etc. to transfer funds to the following EOS contract
-              address.
+              Please use a wallet that supports the EOS network, such as Anchor, Wombat, Tokenpocket or a centralized exchange such as Binance, Coinbase, etc. 
               <br>
-              Please fill in the EVM destination address in the Memo to complete the deposit to EVM.
+              To transfer funds to the following EOS contract address, please fill in the EVM destination address in the Memo to complete the deposit to EVM.
             </div>
           </b-row>
         </b-card>
@@ -374,6 +372,10 @@ export default {
   box-shadow: inset 0px -1px 2px 0px rgba(0, 0, 0, 0.3);
 }
 
+.connect-btn {
+  width: 142px;
+  margin-left: -12px;
+}
 @media (max-width: 400px) {
   .transfer-btn {
     width: 340px;

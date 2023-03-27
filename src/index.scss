@@ -33,6 +33,13 @@ body {
   }
 }
 
+.form-control {
+  font-size: 13px;
+  padding-right: 5px;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
 .form-control:not(.select) {
   border-top-color: transparent;
   border-left-color: transparent;

@@ -30,22 +30,16 @@ import { RouterView } from 'vue-router'
           <img class="mb-3" src="./assets/logo.svg" alt="" style="height: 45px;">
         </b-col>
         <b-col sm class="text-center text-lg-end" style="font-size: 1.5em;">
-          <b-link>
-            <fa icon="medium" fab />
-          </b-link>
-          <b-link>
+          <b-link href="https://twitter.com/EosNFoundation">
             <fa icon="twitter" fab />
-          </b-link>
-          <b-link>
+          </b-link >
+          <b-link href="https://discord.gg/eos-network">
             <fa icon="discord" fab />
           </b-link>
-          <b-link>
+          <b-link href="https://t.me/EOSNetworkFoundation">
             <fa icon="telegram" fab />
           </b-link>
-          <b-link>
-            <fa icon="linkedin" fab />
-          </b-link>
-          <b-link>
+          <b-link href="https://www.youtube.com/@EOSNetworkFoundation">
             <fa icon="youtube" fab />
           </b-link>
         </b-col>
