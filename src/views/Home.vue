@@ -14,8 +14,7 @@
                       <input type="search" id="from" class="form-control" v-model="address" maxlength="42" disabled>
                     </div>
                     <div class="col col-auto">
-                      <b-button class="connect-btn" variant="primary" @click="connectWallet()"
-                        :disabled="connecting">
+                      <b-button class="connect-btn" variant="primary" @click="connectWallet()" :disabled="connecting">
                         {{ connected ? 'Connected' : 'Connect Wallet' }}
                       </b-button>
                     </div>
@@ -109,9 +108,11 @@
               <b>From</b>
             </b-col>
             <div class="col">
-              Please use a wallet that supports the EOS network, such as Anchor, Wombat, Tokenpocket or a centralized exchange such as Binance, Coinbase, etc. 
+              Please use a wallet that supports the EOS network, such as Anchor, Wombat, Tokenpocket or a centralized
+              exchange such as Binance, Coinbase, etc.
               <br>
-              To transfer funds to the following EOS contract address, please fill in the EVM destination address in the Memo to complete the deposit to EVM.
+              To transfer funds to the following EOS contract address, please fill in the EVM destination address in the
+              Memo to complete the deposit to EVM.
             </div>
           </b-row>
         </b-card>
@@ -243,7 +244,8 @@ export default {
         from: this.address,
         to: this.addressEvm,
         value: this.transferValue,
-        gasPrice: this.gasPrice
+        gasPrice: this.gasPrice,
+        data: this.bytesToHex(this.stringToUTF8Bytes(this.memo)),
       })
     },
     async connectWallet() {
@@ -271,6 +273,18 @@ export default {
         this.connecting = false
       }
     },
+
+    stringToUTF8Bytes(string) {
+      return new TextEncoder().encode(string);
+    },
+
+    bytesToHex(bytes) {
+      return "0x" + Array.from(
+        bytes,
+        byte => byte.toString(16).padStart(2, "0")
+      ).join("");
+    },
+
     async transfer() {
       try {
         this.submitting = true
@@ -278,11 +292,19 @@ export default {
         if (!window.confirm(`You are going to transfer ${this.amount} ETH to ${this.targetAddress}`)) {
           return
         }
+        this.gas = await this.web3.eth.estimateGas({
+          from: this.address,
+          to: this.addressEvm,
+          value: this.transferValue,
+          gasPrice: this.gasPrice,
+          data: this.bytesToHex(this.stringToUTF8Bytes(this.memo)),
+        });
         const result = await this.web3.eth.sendTransaction({
           from: this.address,
           to: this.addressEvm,
           value: this.transferValue,
-          gas: this.gas
+          gas: this.gas,
+          data: this.bytesToHex(this.stringToUTF8Bytes(this.memo)),
         })
         this.transactionHash = result.transactionHash
         this.getBalance()
@@ -376,6 +398,7 @@ export default {
   width: 142px;
   margin-left: -12px;
 }
+
 @media (max-width: 400px) {
   .transfer-btn {
     width: 340px;
