@@ -14,8 +14,11 @@
                       <input type="search" id="from" class="form-control" v-model="address" maxlength="42" disabled>
                     </div>
                     <div class="col col-auto">
-                      <b-button class="connect-btn" variant="primary" @click="connectWallet()" :disabled="connecting">
-                        {{ connected ? 'Connected' : 'Connect Wallet' }}
+                      <b-button class="connect-btn" variant="primary" @click="connectWallet()"
+                        :disabled="wallet.connecting">
+                        <span v-if="wallet.connected">Connected</span>
+                        <span v-else-if="wallet.connecting">Connecting</span>
+                        <span v-else>Connect Wallet</span>
                       </b-button>
                     </div>
                   </div>
@@ -24,7 +27,8 @@
                 <div class="row align-items-center">
                   <div class="col">
                     <label for="amount">Amount</label>
-                    <input type="number" id="amount" class="form-control" min="0" :max="balance" :disabled="!connected"
+                    <input type="number" id="amount" class="form-control" min="0" :max="balance"
+                           :disabled="!wallet.connected"
                       v-model="amount">
                     <div class="form-text">
                       My balance: <span id="balance" v-if="balance">{{ balance }}</span>
@@ -146,8 +150,8 @@
                 </div>
                 <div class="mt-2" v-if="!address">
                   Please
-                  <b-link @click="connectWallet" :disabled="connecting">
-                    <fa icon="spinner" spin v-if="connecting" />
+                  <b-link @click="connectWallet" :disabled="wallet.connecting">
+                    <fa icon="spinner" spin v-if="wallet.connecting" />
                     connect wallet
                   </b-link>
                   first
@@ -168,6 +172,7 @@ import clipboardCopy from '../utils/copy-text'
 
 export default {
   name: 'home',
+  inject: ['wallet'],
   data() {
     return {
       address: '',
@@ -179,14 +184,14 @@ export default {
       gasPrice: '',
       transactionHash: '',
       tab: '',
-      connecting: false,
-      connected: false,
       submitting: false,
       finished: false,
       transactionError: ''
     }
   },
   created() {
+    this.wallet.connect = this.connectWallet
+
     this.web3 = new Web3(Web3.givenProvider || new Web3.providers.HttpProvider('http://localhost:8545'))
 
     this.web3.eth.getAccounts().then(results => {
@@ -231,10 +236,6 @@ export default {
     }
   },
   methods: {
-    selectTab(val) {
-      location.hash = val ? '#' + val : ''
-      this.tab = val
-    },
     async calcFee() {
       if (!this.addressEvm) {
         return
@@ -250,27 +251,28 @@ export default {
     },
     async connectWallet() {
       try {
-        this.connecting = true
+        this.wallet.connecting = true
         let results = await this.web3.eth.getAccounts()
         if (!results.length) {
           results = await this.web3.eth.requestAccounts()
         }
         this.address = results[0]
+        this.wallet.address = this.address
         this.getBalance()
       } finally {
-        this.connecting = false
+        this.wallet.connecting = false
       }
     },
     async getBalance() {
       try {
         const address = this.address
-        this.connecting = true
-        this.connected = false
+        this.wallet.connecting = true
+        this.wallet.connected = false
         const wei = await this.web3.eth.getBalance(address)
         this.balance = this.web3.utils.fromWei(wei, 'ether')
-        this.connected = true
+        this.wallet.connected = true
       } finally {
-        this.connecting = false
+        this.wallet.connecting = false
       }
     },
 

@@ -65,4 +65,5 @@ a.disabled {
   color: $text-muted;
   cursor: default;
   user-select: none;
+  pointer-events: none;
 }

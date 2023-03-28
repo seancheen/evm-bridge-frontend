@@ -1,27 +1,39 @@
 <script setup>
+import { provide, reactive } from 'vue'
 import { RouterView } from 'vue-router'
+
+const wallet = reactive({
+  connected: false,
+  connecting: false,
+  connect: null
+})
+provide('wallet', wallet)
 </script>
 
 <template>
   <header>
-    <nav class="navbar">
+    <nav class="navbar navbar-dark">
       <div class="container">
-      <a class="navbar-brand" href="">
-        <img src="./assets/logo.svg" alt="" style="height: 45px;">
-      </a>
-      <!---
+        <a class="navbar-brand" href="">
+          <img src="./assets/logo.svg" alt="" style="height: 45px;">
+        </a>
         <div class="ml-auto">
-          <b-link>
-            En
-              <fa icon="caret-down"/>
-            </b-link>
-          </div>
-          --->
+          <b-navbar-nav v-if="wallet.connect">
+            <span class="address" v-if="wallet.address">
+              {{wallet.address.slice(0, 6) + '...' + wallet.address.slice(-4)}}
+            </span>
+            <span v-else-if="wallet.connected">Connected</span>
+            <b-nav-item @click="wallet.connect()" v-else>
+              <span v-if="wallet.connecting">Connecting</span>
+              <span v-else>Connect Wallet</span>
+            </b-nav-item>
+          </b-navbar-nav>
+        </div>
       </div>
     </nav>
   </header>
 
-  <RouterView class="main" />
+  <RouterView class="main"/>
 
   <footer>
     <div class="container">
@@ -31,16 +43,16 @@ import { RouterView } from 'vue-router'
         </b-col>
         <b-col sm class="text-center text-lg-end" style="font-size: 1.5em;">
           <b-link href="https://twitter.com/EosNFoundation">
-            <fa icon="twitter" fab />
-          </b-link >
+            <fa icon="twitter" fab/>
+          </b-link>
           <b-link href="https://discord.gg/eos-network">
-            <fa icon="discord" fab />
+            <fa icon="discord" fab/>
           </b-link>
           <b-link href="https://t.me/EOSNetworkFoundation">
-            <fa icon="telegram" fab />
+            <fa icon="telegram" fab/>
           </b-link>
           <b-link href="https://www.youtube.com/@EOSNetworkFoundation">
-            <fa icon="youtube" fab />
+            <fa icon="youtube" fab/>
           </b-link>
         </b-col>
       </b-row>
@@ -55,7 +67,27 @@ header {
     color: #fff;
   }
 
-  a {
+  .address[data-select] {
+    display: inline-block;
+    position: relative;
+
+    span {
+      opacity: 0;
+    }
+
+    &:after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      content: attr(data-select);
+      pointer-events: none;
+      user-select: none;
+    }
+  }
+
+  :deep(a) {
     color: inherit;
   }
 }
