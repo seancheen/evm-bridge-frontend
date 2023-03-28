@@ -291,7 +291,7 @@ export default {
       try {
         this.submitting = true
         this.transactionHash = ''
-        if (!window.confirm(`You are going to transfer ${this.amount} ETH to ${this.targetAddress}`)) {
+        if (!window.confirm(`You are going to transfer ${this.amount} EOS to ${this.targetAddress}`)) {
           return
         }
         this.gas = await this.web3.eth.estimateGas({
