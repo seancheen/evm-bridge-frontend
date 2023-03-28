@@ -197,6 +197,7 @@ export default {
     this.web3.eth.getAccounts().then(results => {
       if (results && results.length) {
         this.address = results[0]
+        this.wallet.address = this.address
         this.getBalance()
       }
     })
