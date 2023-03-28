@@ -194,7 +194,8 @@ export default {
 
     this.web3 = new Web3(Web3.givenProvider || new Web3.providers.HttpProvider('http://localhost:8545'))
 
-    this.web3.eth.getAccounts().then(results => {
+    this.web3.eth.getAccounts().then(async results => {
+      await this.checkChainID()
       if (results && results.length) {
         this.address = results[0]
         this.wallet.address = this.address
@@ -250,6 +251,32 @@ export default {
         data: this.bytesToHex(this.stringToUTF8Bytes(this.memo)),
       })
     },
+
+    async checkChainID() {
+      let chainId = await this.web3.eth.getChainId()
+        console.log(chainId)
+        if (chainId != 15557) {
+        try {
+          await Web3.givenProvider.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: "0x3CC5" }],
+          });
+          console.log("You have switched to the right network")
+
+        } catch (switchError) {
+
+          // The network has not been added to MetaMask
+          if (switchError.code === 4902) {
+            console.log("Please add the EOS-EVM network to MetaMask")
+
+          }
+          console.log("Cannot switch to the network")
+          console.log(switchError)
+
+        }
+      }
+    },
+    
     async connectWallet() {
       try {
         this.wallet.connecting = true
@@ -259,6 +286,7 @@ export default {
         }
         this.address = results[0]
         this.wallet.address = this.address
+        await this.checkChainID()
         this.getBalance()
       } finally {
         this.wallet.connecting = false
