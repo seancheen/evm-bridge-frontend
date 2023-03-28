@@ -18,14 +18,16 @@ provide('wallet', wallet)
           <img src="./assets/logo.svg" alt="" style="height: 45px;">
         </a>
         <div class="ml-auto">
-          <b-navbar-nav v-if="wallet.connect">
-            <span class="address" v-if="wallet.address">
-              {{wallet.address.slice(0, 6) + '...' + wallet.address.slice(-4)}}
-            </span>
-            <span v-else-if="wallet.connected">Connected</span>
-            <b-nav-item @click="wallet.connect()" v-else>
-              <span v-if="wallet.connecting">Connecting</span>
-              <span v-else>Connect Wallet</span>
+          <b-navbar-nav v-if="wallet.connect" class="header-connect">
+            <b-nav-item class="connect-btn" @click="wallet.connect()">
+              <span class="address" v-if="wallet.address">
+                {{ wallet.address.slice(0, 6) + '...' + wallet.address.slice(-4) }}
+              </span>
+              <span v-else-if="wallet.connected">Connected</span>
+              <span class="connect-btn" @click="wallet.connect()" v-else>
+                <span v-if="wallet.connecting">Connecting</span>
+                <span v-else>Connect Wallet</span>
+              </span>
             </b-nav-item>
           </b-navbar-nav>
         </div>
@@ -33,7 +35,7 @@ provide('wallet', wallet)
     </nav>
   </header>
 
-  <RouterView class="main"/>
+  <RouterView class="main" />
 
   <footer>
     <div class="container">
@@ -43,16 +45,16 @@ provide('wallet', wallet)
         </b-col>
         <b-col sm class="text-center text-lg-end" style="font-size: 1.5em;">
           <b-link href="https://twitter.com/EosNFoundation">
-            <fa icon="twitter" fab/>
+            <fa icon="twitter" fab />
           </b-link>
           <b-link href="https://discord.gg/eos-network">
-            <fa icon="discord" fab/>
+            <fa icon="discord" fab />
           </b-link>
           <b-link href="https://t.me/EOSNetworkFoundation">
-            <fa icon="telegram" fab/>
+            <fa icon="telegram" fab />
           </b-link>
           <b-link href="https://www.youtube.com/@EOSNetworkFoundation">
-            <fa icon="youtube" fab/>
+            <fa icon="youtube" fab />
           </b-link>
         </b-col>
       </b-row>
@@ -62,6 +64,14 @@ provide('wallet', wallet)
 </template>
 
 <style scoped lang="scss">
+.header-connect {
+  border: 1px solid #fff;
+  border-radius: 10px;
+  width: 150px;
+  height: 40px;
+  text-align: center;
+}
+
 header {
   .navbar {
     color: #fff;
