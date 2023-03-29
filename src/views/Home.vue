@@ -54,7 +54,7 @@
               <b-col>
                 <div class="mb-3">
                   <label for="address">Destination Account</label>
-                  <div class="form-text mb-2">Please paste the EOS Address below</div>
+                  <div class="form-text mb-2">Please paste the EOS Address below:</div>
                   <input type="text" id="address" class="form-control select" @change="calcFee" v-model="targetAddress"
                     maxlength="13" list="addresses">
                   <datalist id="addresses">
@@ -95,7 +95,9 @@
           <div class="mt-2 text-center small text-white">
             Gas Fee: <span v-if="transferFee">~{{ transferFee }}EOS</span>
             <br>
-            Time to transfer: &lt; 5s
+            Time to Transfer: ~ 5 s
+            <br>
+            Time to Exchanges: ~ 3 mins
           </div>
 
           <div class="transaction-hash" v-if="transactionHash">
@@ -111,16 +113,17 @@
               <b>From</b>
             </b-col>
             <div class="col">
-              Please use a wallet that supports the EOS network, such as Anchor, Wombat, Tokenpocket or a centralized
-              exchange such as Binance, Coinbase, etc.
-              <br>
-              To transfer funds to the following EOS contract address, please fill in the EVM destination address in the
-              Memo to complete the deposit to EVM.
-              <br>
-              <span style="color: red">Warning: This is the TESTNET.
-                <br>Please confirm that your wallet is connected to the
-                correct network before making a transfer. Using the wrong network may result in potential loss of
-                assets.</span>
+              <span style="color: red">
+                <p>Warning! This is the TESTNET.</p>
+                <p>Please confirm that your wallet is connected to the
+                  correct network before making a transfer. Using the wrong network may result in potential loss of
+                  assets.</p>
+              </span>
+              <p>Please use a wallet that supports the EOS network, such as Anchor, Wombat, Tokenpocket or a centralized
+                exchange such as Binance, Coinbase, etc.</p>
+              <p>
+                To transfer funds to the following EOS contract address, please fill in the EVM destination address in the
+                Memo to complete the deposit to EVM.</p>
             </div>
           </b-row>
         </b-card>
@@ -135,7 +138,7 @@
             <div class="col">
               <div class="mb-3">
                 <label>Destination Account</label>
-                <div class="form-text">Please copy the EOS Address below</div>
+                <div class="form-text">Please use the EOS Address below:</div>
                 <div class="row align-items-end">
                   <div class="col">
                     <div class="input-group">
@@ -146,20 +149,23 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label>Transfer Memo / Memo / Tag</label>
+                <label>Transfer Memo / Destination Tag</label>
+                <div class="form-text">
+                  Please use the desitination EVM addres: <br>
+                  <span v-if="!address">
+                    <b-link @click="connectWallet" :disabled="wallet.connecting">
+                      <fa icon="spinner" spin v-if="wallet.connecting" />
+                      Connect EVM wallet
+                    </b-link>
+                    to display your address.
+                  </span>
+                </div>
                 <div class="input-group">
                   <input type="text" class="form-control" disabled :value="address" id="memo">
                   <button class="btn btn-secondary" :disabled="!address" @click="copyText(address)">Copy
                   </button>
                 </div>
-                <div class="mt-2" v-if="!address">
-                  Please
-                  <b-link @click="connectWallet" :disabled="wallet.connecting">
-                    <fa icon="spinner" spin v-if="wallet.connecting" />
-                    connect wallet
-                  </b-link>
-                  first
-                </div>
+
               </div>
             </div>
           </b-row>
@@ -170,9 +176,9 @@
         </div>
 
         <div class="mt-2 text-center small text-white">
-          <span>Ingress Fee: 0.01 EOS</span>
+          <span>Bridge Fee: 0.01 EOS</span>
           <br>
-          Time to transfer: &lt; 5s
+          Time to Transfer: ~ 5 s
         </div>
       </b-tab>
     </b-tabs>
