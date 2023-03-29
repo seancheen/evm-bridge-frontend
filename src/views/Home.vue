@@ -28,8 +28,7 @@
                   <div class="col">
                     <label for="amount">Amount</label>
                     <input type="number" id="amount" class="form-control" min="0" :max="balance"
-                           :disabled="!wallet.connected"
-                      v-model="amount">
+                      :disabled="!wallet.connected" v-model="amount">
                     <div class="form-text">
                       My balance: <span id="balance" v-if="balance">{{ balance }}</span>
                     </div>
@@ -195,7 +194,7 @@ export default {
     this.web3 = new Web3(Web3.givenProvider || new Web3.providers.HttpProvider('http://localhost:8545'))
 
     this.web3.eth.getAccounts().then(async results => {
-      
+
       if (results && results.length) {
         this.address = results[0]
         this.wallet.address = this.address
@@ -262,8 +261,8 @@ export default {
 
     async checkChainID() {
       let chainId = await this.web3.eth.getChainId()
-        console.log(chainId)
-        if (chainId != 15557) {
+      console.log(chainId)
+      if (chainId != 15557) {
         try {
           window.alert('You must switch to correct network to continue.')
           await Web3.givenProvider.request({
@@ -278,6 +277,29 @@ export default {
           if (switchError.code === 4902) {
             console.log("Please add the EOS-EVM network to MetaMask")
 
+            if (window.confirm("Please add the EOS-EVM network to MetaMask.")) {
+              await Web3.givenProvider.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                  chainId: '0x3CC5',
+                  chainName: 'EOS-EVM Testnet2',
+                  nativeCurrency: {
+                    name: 'EOS',
+                    symbol: 'EOS',
+                    decimals: 18
+                  },
+                  rpcUrls: ['https://api-testnet2.trust.one/'],
+                  blockExplorerUrls: ['https://api-testnet2.trust.one']
+                }]
+              })
+
+              await Web3.givenProvider.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: "0x3CC5" }],
+              });
+
+            }
+
           }
           console.log("Cannot switch to the network")
           console.log(switchError)
@@ -285,7 +307,7 @@ export default {
         }
       }
     },
-    
+
     async connectWallet() {
       try {
         this.wallet.connecting = true
