@@ -195,11 +195,19 @@ export default {
     this.web3 = new Web3(Web3.givenProvider || new Web3.providers.HttpProvider('http://localhost:8545'))
 
     this.web3.eth.getAccounts().then(async results => {
-      await this.checkChainID()
+      
       if (results && results.length) {
         this.address = results[0]
         this.wallet.address = this.address
         this.getBalance()
+        await this.checkChainID()
+        let context = this;
+        Web3.givenProvider.on('accountsChanged', function (accounts) {
+          context.address = Web3.utils.toChecksumAddress(accounts[0])
+          context.wallet.address = context.address
+          context.getBalance()
+        })
+        Web3.givenProvider.on('chainChanged', (_chainId) => window.location.reload());
       }
     })
   },
@@ -257,6 +265,7 @@ export default {
         console.log(chainId)
         if (chainId != 15557) {
         try {
+          window.alert('You must switch to correct network to continue.')
           await Web3.givenProvider.request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: "0x3CC5" }],
