@@ -58,7 +58,7 @@ provide('wallet', wallet)
           </b-link>
         </b-col>
       </b-row>
-      <div class="text-center text-sm-start">© 2022 EOS Network Foundation all rights reserved.</div>
+      <div class="text-center text-sm-start">© 2023 EOS Network Foundation all rights reserved.</div>
     </div>
   </footer>
 </template>
