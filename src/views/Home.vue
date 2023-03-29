@@ -289,7 +289,7 @@ export default {
                     decimals: 18
                   },
                   rpcUrls: ['https://api-testnet2.trust.one/'],
-                  blockExplorerUrls: ['https://api-testnet2.trust.one']
+                  blockExplorerUrls: ['https://explorer-testnet2.trust.one']
                 }]
               })
 
