@@ -92,10 +92,10 @@
             </b-button>
           </div>
 
-          <div class="mt-2 text-center small" v-if="transferFee">
-            Gas Fee: ~{{ transferFee }}ETH
+          <div class="mt-2 text-center small text-white">
+            Gas Fee: <span v-if="transferFee">~{{ transferFee }}EOS</span>
             <br>
-            Time to transfer: ~5 minutes
+            Time to transfer: &lt; 5s
           </div>
 
           <div class="transaction-hash" v-if="transactionHash">
@@ -116,6 +116,11 @@
               <br>
               To transfer funds to the following EOS contract address, please fill in the EVM destination address in the
               Memo to complete the deposit to EVM.
+              <br>
+              <span style="color: red">Warning: This is the TESTNET.
+                <br>Please confirm that your wallet is connected to the
+                correct network before making a transfer. Using the wrong network may result in potential loss of
+                assets.</span>
             </div>
           </b-row>
         </b-card>
@@ -159,6 +164,16 @@
             </div>
           </b-row>
         </b-card>
+
+        <div class="d-grid mt-4 text-center small text-white">
+          Send the transacion and it's done!
+        </div>
+
+        <div class="mt-2 text-center small text-white">
+          <span>Ingress Fee: 0.01 EOS</span>
+          <br>
+          Time to transfer: &lt; 5s
+        </div>
       </b-tab>
     </b-tabs>
   </div>
