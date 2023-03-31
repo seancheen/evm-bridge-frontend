@@ -309,8 +309,8 @@ export default {
                     symbol: 'EOS',
                     decimals: 18
                   },
-                  rpcUrls: ['https://api-testnet2.trust.one/'],
-                  blockExplorerUrls: ['https://explorer-testnet2.trust.one']
+                  rpcUrls: ['https://api.testnet.evm.eosnetwork.com/'],
+                  blockExplorerUrls: ['https://explorer.testnet.evm.eosnetwork.com']
                 }]
               })
 
