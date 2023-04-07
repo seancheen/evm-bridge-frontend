@@ -114,7 +114,7 @@
             </b-col>
             <div class="col">
               <span style="color: red">
-                <p>Warning! This is the TESTNET.</p>
+                <p v-if="env === 'TESTNET'">Warning! This is the TESTNET.</p>
                 <p>Please confirm that your wallet is connected to the
                   correct network before making a transfer. Using the wrong network may result in potential loss of
                   assets.</p>
@@ -192,7 +192,7 @@ import clipboardCopy from '../utils/copy-text'
 
 export default {
   name: 'home',
-  inject: ['wallet'],
+  inject: ['wallet', 'env'],
   data() {
     return {
       address: '',

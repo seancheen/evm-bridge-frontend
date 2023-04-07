@@ -16,5 +16,6 @@ app.use(router)
 app.use(alertPlugin)
 
 app.component('Fa', Fa)
+app.provide('env', location.host === 'bridge.evm.eosnetwork.com' ? 'MAINNET' : 'TESTNET')
 
 app.mount('#app')
