@@ -115,6 +115,8 @@
             <div class="col">
               <span style="color: red">
                 <p v-if="env === 'TESTNET'">Warning! This is the TESTNET.</p>
+                <p v-else>Warning! This is the MAINNET.</p>
+
                 <p>Please confirm that your wallet is connected to the
                   correct network before making a transfer. Using the wrong network may result in potential loss of
                   assets.</p>
@@ -282,13 +284,17 @@ export default {
 
     async checkChainID() {
       let chainId = await this.web3.eth.getChainId()
+      let targetChainid = (this.env === "TESTNET" ? 15557 : 17777);
+      let targetChainidHEX = (this.env === "TESTNET" ? "0x3CC5" : "0x4571");
+      let targetApiAddr = (this.env === "TESTNET" ? "https://api.testnet.evm.eosnetwork.com/" : "https://api.evm.eosnetwork.com/");
+      let targetExplorerAddr = (this.env === "TESTNET" ? "https://explorer.testnet.evm.eosnetwork.com" : "https://explorer.evm.eosnetwork.com");
       console.log(chainId)
-      if (chainId != 15557) {
+      if (chainId != targetChainid) {
         try {
           window.alert('You must switch to correct network to continue.')
           await Web3.givenProvider.request({
             method: 'wallet_switchEthereumChain',
-            params: [{ chainId: "0x3CC5" }],
+            params: [{ chainId: targetChainidHEX }],
           });
           console.log("You have switched to the right network")
 
@@ -302,21 +308,21 @@ export default {
               await Web3.givenProvider.request({
                 method: 'wallet_addEthereumChain',
                 params: [{
-                  chainId: '0x3CC5',
+                  chainId: targetChainidHEX,
                   chainName: 'EOS-EVM Testnet2',
                   nativeCurrency: {
                     name: 'EOS',
                     symbol: 'EOS',
                     decimals: 18
                   },
-                  rpcUrls: ['https://api.testnet.evm.eosnetwork.com/'],
-                  blockExplorerUrls: ['https://explorer.testnet.evm.eosnetwork.com']
+                  rpcUrls: [targetApiAddr],
+                  blockExplorerUrls: [targetExplorerAddr]
                 }]
               })
 
               await Web3.givenProvider.request({
                 method: 'wallet_switchEthereumChain',
-                params: [{ chainId: "0x3CC5" }],
+                params: [{ chainId: targetChainidHEX }],
               });
 
             }
