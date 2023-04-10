@@ -288,6 +288,7 @@ export default {
       let targetChainidHEX = (this.env === "TESTNET" ? "0x3CC5" : "0x4571");
       let targetApiAddr = (this.env === "TESTNET" ? "https://api.testnet.evm.eosnetwork.com/" : "https://api.evm.eosnetwork.com/");
       let targetExplorerAddr = (this.env === "TESTNET" ? "https://explorer.testnet.evm.eosnetwork.com" : "https://explorer.evm.eosnetwork.com");
+      let targetNetworkName = (this.env === "TESTNET" ? "EOS-EVM Testnet2" : "EOS-EVM");
       console.log(chainId)
       if (chainId != targetChainid) {
         try {
@@ -309,7 +310,7 @@ export default {
                 method: 'wallet_addEthereumChain',
                 params: [{
                   chainId: targetChainidHEX,
-                  chainName: 'EOS-EVM Testnet2',
+                  chainName: targetNetworkName,
                   nativeCurrency: {
                     name: 'EOS',
                     symbol: 'EOS',
