@@ -68,13 +68,13 @@
                 </div>
                 <div>
                   <label class="mb-1" for="memo" id="memoTooltip">
-                    Memo (optional)
+                    memo (optional)
                     <span class="text-success">
                       <fa icon="info-circle" />
                     </span>
                   </label>
                   <b-popover target="memoTooltip" triggers="hover focus">
-                    Please confirm if the receiving address requires a MEMO / Tag.
+                    Please confirm if the receiving address requires a memo / Tag.
                     If it is not filled or filled incorrectly, the asset will be lost.
                   </b-popover>
                   <input type="text" id="memo" class="form-control" v-model="memo">
@@ -121,11 +121,11 @@
                   correct network before making a transfer. Using the wrong network may result in potential loss of
                   assets.</p>
               </span>
-              <p>Please use a wallet that supports the EOS network, such as Anchor, Wombat, Tokenpocket or a centralized
+              <p>Please use a wallet that supports the EOS Network, such as Anchor, Wombat, Tokenpocket or a centralized
                 exchange such as Binance, Coinbase, etc.</p>
               <p>
                 To transfer funds to the following EOS contract address, please fill in the EVM destination address in the
-                Memo to complete the deposit to EVM.</p>
+                memo to complete the deposit to EVM.</p>
             </div>
           </b-row>
         </b-card>
@@ -151,7 +151,7 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label>Transfer Memo / Destination Tag</label>
+                <label>Transfer memo / Destination Tag</label>
                 <div class="form-text">
                   Please use the desitination EVM addres: <br>
                   <span v-if="!address">
@@ -297,15 +297,15 @@ export default {
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: targetChainidHEX }],
           });
-          console.log("You have switched to the right network")
+          console.log("You have switched to the right network.")
 
         } catch (switchError) {
 
           // The network has not been added to MetaMask
           if (switchError.code === 4902) {
-            console.log("Please add the EOS-EVM network to MetaMask")
+            console.log("Please add the EOS-EVM Network to MetaMask.")
 
-            if (window.confirm("Please add the EOS-EVM network to MetaMask.")) {
+            if (window.confirm("Please add the EOS-EVM Network to MetaMask.")) {
               await Web3.givenProvider.request({
                 method: 'wallet_addEthereumChain',
                 params: [{
@@ -329,7 +329,7 @@ export default {
             }
 
           }
-          console.log("Cannot switch to the network")
+          console.log("Cannot switch to the network.")
           console.log(switchError)
 
         }
