@@ -40,8 +40,27 @@ provide('wallet', wallet)
   <footer>
     <div class="container">
       <b-row class="mb-4">
-        <b-col sm="auto" class="text-center text-sm-start">
+        <b-col sm="7" class="text-center text-sm-start">
           <img class="mb-3" src="./assets/logo.svg" alt="" style="height: 45px;">
+        </b-col>
+        <b-col sm="2" class="text-left" style="position: relative">
+
+          <div style="margin:auto; width: fit-content;">
+            <div class="footer-info-header">About</div>
+            <ul>
+              <li>
+                <b-link href="https://docs.eosnetwork.com/docs/latest/eos-evm/">
+                  Docs
+                </b-link>
+              </li>
+              <li>
+                <b-link href="https://docs.eosnetwork.com/docs/latest/eos-evm/">
+                  FAQ
+                </b-link>
+              </li>
+            </ul>
+          </div>
+
         </b-col>
         <b-col sm class="text-center text-lg-end" style="font-size: 1.5em;">
           <b-link href="https://twitter.com/EosNFoundation">
@@ -50,7 +69,7 @@ provide('wallet', wallet)
           <b-link href="https://discord.gg/eos-network">
             <fa icon="discord" fab />
           </b-link>
-          <b-link href="https://t.me/EOSNetworkFoundation">
+          <b-link href="https://t.me/eosevm">
             <fa icon="telegram" fab />
           </b-link>
           <b-link href="https://www.youtube.com/@EOSNetworkFoundation">
@@ -110,6 +129,11 @@ footer {
   a {
     color: inherit;
     margin-left: 1em;
+  }
+
+  .footer-info-header {
+    font-size: large;
+    font-weight:bold;
   }
 }
 </style>
