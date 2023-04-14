@@ -57,10 +57,6 @@
                   <div class="form-text mb-2">Please paste the EOS Address below:</div>
                   <input type="text" id="address" class="form-control select" @change="calcFee" v-model="targetAddress"
                     maxlength="13" list="addresses">
-                  <datalist id="addresses">
-                    <option value="coinbase.it"></option>
-                    <option value="binancecleos"></option>
-                  </datalist>
                   <div class="form-text font-monospace" v-if="addressEvm">
                     <span v-if="addressEvm.message">{{ addressEvm.message }}</span>
                     <span v-else>{{ addressEvm }}</span>
