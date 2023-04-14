@@ -241,6 +241,10 @@ export default {
       if (!this.targetAddress) {
         return ''
       }
+      const blockList = ['binancecleos', 'huobideposit', 'okbtothemoon']
+      if (blockList.includes(this.targetAddress)) {
+        return new Error('This CEX has not fully support the EOS-EVM bridge yet.')
+      }
       return this.convertAddress(this.targetAddress)
     },
     transferValue() {
