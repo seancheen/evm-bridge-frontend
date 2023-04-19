@@ -12,6 +12,10 @@
   font-weight: 700;
 }
 
+:root {
+  --bs-body-color: #fff;
+}
+
 body {
   background-image: url(./assets/bg.jpg);
   background-size: cover;
@@ -31,6 +35,10 @@ body {
     padding-top: 1rem;
     padding-bottom: 1rem;
   }
+}
+
+.card {
+  color: #000;
 }
 
 .form-control {
@@ -66,4 +74,8 @@ a.disabled {
   cursor: default;
   user-select: none;
   pointer-events: none;
+}
+
+.dropdown-toggle-no-caret:after {
+  display: none !important;
 }

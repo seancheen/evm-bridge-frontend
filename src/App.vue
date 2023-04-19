@@ -1,41 +1,55 @@
 <script setup>
-import { provide, reactive } from 'vue'
+import { provide, reactive, ref, inject } from 'vue'
 import { RouterView } from 'vue-router'
 
+const i18n = inject('i18n')
 const wallet = reactive({
   connected: false,
   connecting: false,
   connect: null
 })
 provide('wallet', wallet)
+const lang = ref(i18n.global.locale.value || 'en')
+const langs = {
+  en: 'English',
+  ko: '한국인'
+}
+const selectLang = (val) => {
+  lang.value = val
+  i18n.global.locale.value = val
+  localStorage.locale = val
+}
 </script>
 
 <template>
   <header>
-    <nav class="navbar navbar-dark">
-      <div class="container">
+    <div class="container">
+      <b-navbar dark toggleable="sm">
         <a class="navbar-brand" href="">
           <img src="./assets/logo.svg" alt="" style="height: 45px;">
         </a>
-        <div class="ml-auto">
-          <b-navbar-nav v-if="wallet.connect" class="header-connect">
-            <b-nav-item class="connect-btn" @click="wallet.connect()">
-              <span class="address" v-if="wallet.address">
-                {{ wallet.address.slice(0, 6) + '...' + wallet.address.slice(-4) }}
-              </span>
-              <span v-else-if="wallet.connected">Connected</span>
-              <span class="connect-btn" @click="wallet.connect()" v-else>
-                <span v-if="wallet.connecting">Connecting</span>
-                <span v-else>Connect Wallet</span>
-              </span>
-            </b-nav-item>
-          </b-navbar-nav>
-        </div>
-      </div>
-    </nav>
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item-dropdown class="me-3" no-caret strategy="fixed" toggle-class="locale">
+            <template #button-content>
+              <fa icon="language"/>
+              {{langs[lang]}}
+            </template>
+            <b-dropdown-item @click="selectLang(k)" v-for="(v, k) in langs" :key="k">{{v}}</b-dropdown-item>
+          </b-nav-item-dropdown>
+          <span class="address" v-if="wallet.address">
+            {{wallet.address.slice(0, 6) + '...' + wallet.address.slice(-4)}}
+          </span>
+          <b-nav-item class="connect-btn d-none d-sm-block" @click="wallet.connect()" v-else>
+            <span v-if="wallet.connected">Connected</span>
+            <span v-else-if="wallet.connecting">{{$t('home.connecting')}}</span>
+            <span v-else>{{$t('home.connectWallet')}}</span>
+          </b-nav-item>
+        </b-navbar-nav>
+      </b-navbar>
+    </div>
   </header>
 
-  <RouterView class="main" />
+  <RouterView class="main"/>
 
   <footer>
     <div class="container">
@@ -46,16 +60,16 @@ provide('wallet', wallet)
         <b-col sm="2" class="text-left" style="position: relative">
 
           <div style="margin:auto; width: fit-content;">
-            <div class="footer-info-header">About</div>
-            <ul>
+            <div class="footer-info-header">{{$t('navbar.about')}}</div>
+            <ul style="list-style: none; padding-left: 0;">
               <li>
                 <b-link href="https://docs.eosnetwork.com/docs/latest/eos-evm/">
-                  Docs
+                  {{$t('navbar.docs')}}
                 </b-link>
               </li>
               <li>
                 <b-link href="https://docs.eosnetwork.com/docs/latest/eos-evm/">
-                  FAQ
+                  {{$t('navbar.faq')}}
                 </b-link>
               </li>
             </ul>
@@ -64,31 +78,33 @@ provide('wallet', wallet)
         </b-col>
         <b-col sm class="text-center text-lg-end" style="font-size: 1.5em;">
           <b-link href="https://twitter.com/EosNFoundation">
-            <fa icon="twitter" fab />
+            <fa icon="twitter" fab/>
           </b-link>
           <b-link href="https://discord.gg/eos-network">
-            <fa icon="discord" fab />
+            <fa icon="discord" fab/>
           </b-link>
           <b-link href="https://t.me/eosevm">
-            <fa icon="telegram" fab />
+            <fa icon="telegram" fab/>
           </b-link>
           <b-link href="https://www.youtube.com/@EOSNetworkFoundation">
-            <fa icon="youtube" fab />
+            <fa icon="youtube" fab/>
           </b-link>
         </b-col>
       </b-row>
-      <div class="text-center text-sm-start">© 2023 EOS Network Foundation all rights reserved.</div>
+      <div class="text-center text-sm-start">{{$t('footer.copyright')}}</div>
     </div>
   </footer>
 </template>
 
 <style scoped lang="scss">
-.header-connect {
+.connect-btn:deep(.nav-link) {
   border: 1px solid #fff;
   border-radius: 10px;
-  width: 150px;
-  height: 40px;
   text-align: center;
+}
+
+:deep(.locale) {
+  color: #fff;
 }
 
 header {
@@ -133,7 +149,7 @@ footer {
 
   .footer-info-header {
     font-size: large;
-    font-weight:bold;
+    font-weight: bold;
   }
 }
 </style>
