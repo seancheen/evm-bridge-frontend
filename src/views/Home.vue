@@ -114,18 +114,13 @@
             </b-col>
             <div class="col">
               <span style="color: red">
-                <p v-if="env === 'TESTNET'">Warning! This is the TESTNET.</p>
-                <p v-else>Warning! This is the MAINNET.</p>
+                <p v-if="env === 'TESTNET'">{{$t('home.netWarning.testnet')}}</p>
+                <p v-else>{{$t('home.netWarning.mainnet')}}</p>
 
-                <p>Please confirm that your wallet is connected to the
-                  correct network before making a transfer. Using the wrong network may result in potential loss of
-                  assets.</p>
+                <p>{{$t('home.netWarning.desc')}}</p>
               </span>
-              <p>Please use a wallet that supports the EOS Network, such as Anchor, Wombat, Tokenpocket or a centralized
-                exchange such as Binance, Coinbase, etc.</p>
-              <p>
-                To transfer funds to the following EOS contract address, please fill in the EVM destination address in the
-                memo to complete the deposit to EVM.</p>
+              <p>{{$t('home.eos2evmDesc.p1')}}</p>
+              <p>{{$t('home.eos2evmDesc.p2')}}</p>
             </div>
           </b-row>
         </b-card>
@@ -248,7 +243,7 @@ export default {
       }
       const blockList = ['binancecleos', 'huobideposit', 'okbtothemoon']
       if (blockList.includes(this.targetAddress)) {
-        return new Error('This CEX has not fully support the EOS-EVM bridge yet.')
+        return new Error(this.$t('home.cexNotSupported'))
       }
       return this.convertAddress(this.targetAddress)
     },
@@ -297,20 +292,18 @@ export default {
       console.log(chainId)
       if (chainId != targetChainid) {
         try {
-          window.alert('You must switch to correct network to continue.')
+          window.alert(this.$t('home.swtichNetPrompt'))
           await Web3.givenProvider.request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: targetChainidHEX }],
           });
-          console.log("You have switched to the right network.")
 
         } catch (switchError) {
 
           // The network has not been added to MetaMask
           if (switchError.code === 4902) {
-            console.log("Please add the EOS-EVM Network to MetaMask.")
 
-            if (window.confirm("Please add the EOS-EVM Network to MetaMask.")) {
+            if (window.confirm(this.$t('home.addNetPrompt'))) {
               await Web3.givenProvider.request({
                 method: 'wallet_addEthereumChain',
                 params: [{
@@ -384,7 +377,7 @@ export default {
       try {
         this.submitting = true
         this.transactionHash = ''
-        if (!window.confirm(`You are going to transfer ${this.amount} EOS to ${this.targetAddress}`)) {
+        if (!window.confirm(this.$t('home.transferConfirm', [this.amount, this.targetAddress]))) {
           return
         }
         this.gas = await this.web3.eth.estimateGas({
@@ -419,12 +412,12 @@ export default {
     },
     convertAddress(source) {
       try {
-        return uint64ToAddr(strToUint64(source))
+        return uint64ToAddr(strToUint64(source, this.$t))
       } catch (err) {
         return err
       }
 
-      function charToSymbol(c) {
+      function charToSymbol(c, t) {
         const a = 'a'.charCodeAt(0)
         const z = 'z'.charCodeAt(0)
         const one = '1'.charCodeAt(0)
@@ -439,10 +432,10 @@ export default {
         if (c === '.') {
           return 0
         }
-        throw new Error('Address include illegal character')
+        throw new Error(t('home.addressCheck.invalidAddress'))
       }
 
-      function strToUint64(str) {
+      function strToUint64(str, t) {
         var n = new BN()
         var i = str.length
         if (i >= 13) {
@@ -451,15 +444,15 @@ export default {
 
           // The 13th character must be in the range [.1-5a-j] because it needs to be encoded
           // using only four bits (64_bits - 5_bits_per_char * 12_chars).
-          n = new BN(charToSymbol(str[12]))
+          n = new BN(charToSymbol(str[12], t))
           if (n >= 16) {
-            throw new Error('Invalid 13th character')
+            throw new Error(t('home.addressCheck.invalid13Char'))
           }
         }
         // Encode full-range characters.
 
         while (--i >= 0) {
-          n = n.or(new BN(charToSymbol(str[i])).shln((64 - 5 * (i + 1))))
+          n = n.or(new BN(charToSymbol(str[i]), t).shln((64 - 5 * (i + 1))))
         }
         return n.toString(16, 16)
       }
@@ -470,7 +463,7 @@ export default {
     },
     copyText(val) {
       return clipboardCopy(val).then(() => {
-        this.$alert.success('Address copied')
+        this.$alert.success(this.$t('home.addrCopied'))
       })
     }
   }

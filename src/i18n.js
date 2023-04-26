@@ -25,12 +25,29 @@ const messages = {
     'home.exchangeTime': 'Time to exchange: {0}',
     'home.lastTransaction': 'Last transaction:',
     'home.copy': 'Copy',
+    'home.addrCopied' : 'Address copied',
     'home.bridgeFee': 'Bridge Fee:',
     'home.depositDesc': 'Send the transaction and it\'s done!',
     'home.depositMemoLabel': 'Transfer memo / Destination Tag',
     'home.addressTitle': 'Please use the destination EVM address:',
     'home.connectEvmWallet': 'Connect EVM wallet',
     'home.addressDesc': '{0} to display your address.',
+
+    'home.netWarning.testnet': 'Warning! This is the TESTNET.',
+    'home.netWarning.mainnet': 'Warning! This is the MAINNET.',
+    'home.netWarning.desc': 'Please confirm that your wallet is connected to the correct network before making a transfer. Using the wrong network may result in potential loss of assets.',
+    'home.eos2evmDesc.p1': 'Please use a wallet that supports the EOS Network, such as Anchor, Wombat, Tokenpocket or a centralized exchange such as Binance, Coinbase, etc.',
+    'home.eos2evmDesc.p2': 'To transfer funds to the following EOS contract address, please fill in the EVM destination address in the memo to complete the deposit to EVM.',
+
+    'home.addressCheck.invalidAddress': 'Address include illegal character',
+    'home.addressCheck.invalid13Char': 'Invalid 13th character',
+
+    'home.cexNotSupported' : 'This CEX has not fully support the EOS-EVM bridge yet.',
+
+    'home.swtichNetPrompt' : 'You must switch to correct network to continue.',
+    'home.addNetPrompt' : 'Please add the EOS-EVM Network to MetaMask.',
+
+    'home.transferConfirm' : 'You are going to transfer {0} EOS to {1}',
 
     'navbar.about': 'About',
     'navbar.docs': 'Docs',
