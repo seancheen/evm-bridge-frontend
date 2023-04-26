@@ -36,7 +36,7 @@ const selectLang = (val) => {
             </template>
             <b-dropdown-item @click="selectLang(k)" v-for="(v, k) in langs" :key="k">{{v}}</b-dropdown-item>
           </b-nav-item-dropdown>
-          <span class="address" v-if="wallet.address">
+          <span class="address" style="line-height: 45px;" v-if="wallet.address">
             {{wallet.address.slice(0, 6) + '...' + wallet.address.slice(-4)}}
           </span>
           <b-nav-item class="connect-btn d-none d-sm-block" @click="wallet.connect()" v-else>
