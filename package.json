@@ -1,6 +1,6 @@
 {
-  "name": "evm",
-  "version": "1.0.0",
+  "name": "evm-bridge-frontend",
+  "version": "0.8.0",
   "private": true,
   "scripts": {
     "dev": "vite",
