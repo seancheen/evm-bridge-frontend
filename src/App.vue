@@ -2,6 +2,7 @@
 import { provide, reactive } from 'vue'
 import { RouterView } from 'vue-router'
 
+var env = location.host === 'bridge.evm.eosnetwork.com' ? 'MAINNET' : 'TESTNET'
 const wallet = reactive({
   connected: false,
   connecting: false,
@@ -13,7 +14,6 @@ const networks = {
   "Testnet": 'https://bridge.testnet.evm.eosnetwork.com',
   "Mainnet": 'https://bridge.evm.eosnetwork.com'
 }
-
 </script>
 
 <template>
@@ -21,7 +21,8 @@ const networks = {
     <div class="container">
       <b-navbar dark toggleable="sm">
         <a class="navbar-brand" href="">
-          <img src="./assets/logo.svg" alt="" style="height: 45px;">
+          <img v-if="env === 'TESTNET'" src="./assets/eos_evm_testnet_logo.svg" alt="" style="filter:invert(1); height: 45px;">
+          <img v-else src="./assets/eos_evm_logo.svg" alt="" style="filter:invert(1); height: 45px;">
         </a>
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown class="me-3" text="Switch Network" toggle-class="text-decoration-none" no-caret>
@@ -47,7 +48,8 @@ const networks = {
     <div class="container">
       <b-row class="mb-4">
         <b-col sm="7" class="text-center text-sm-start">
-          <img class="mb-3" src="./assets/logo.svg" alt="" style="height: 45px;">
+          <img v-if="env === 'TESTNET'" class="mb-3" src="./assets/eos_evm_testnet_logo.svg" alt="" style="filter:invert(1); height: 45px;">
+          <img v-else class="mb-3" src="./assets/eos_evm_logo.svg" alt="" style="filter:invert(1); height: 45px;">
         </b-col>
         <b-col sm="2" class="text-left" style="position: relative">
 
