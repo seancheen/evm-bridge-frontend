@@ -10,32 +10,36 @@ const wallet = reactive({
 })
 provide('wallet', wallet)
 
+const networks = {
+  "Testnet": 'https://bridge.testnet.evm.eosnetwork.com',
+  "Mainnet": 'https://bridge.evm.eosnetwork.com'
+}
 </script>
 
 <template>
   <header>
-    <nav class="navbar navbar-dark">
-      <div class="container">
+    <div class="container">
+      <b-navbar dark toggleable="sm">
         <a class="navbar-brand" href="">
           <img v-if="env === 'TESTNET'" src="./assets/eos_evm_testnet_logo.svg" alt="" style="filter:invert(1); height: 45px;">
           <img v-else src="./assets/eos_evm_logo.svg" alt="" style="filter:invert(1); height: 45px;">
         </a>
-        <div class="ml-auto">
-          <b-navbar-nav v-if="wallet.connect" class="header-connect">
-            <b-nav-item class="connect-btn" @click="wallet.connect()">
-              <span class="address" v-if="wallet.address">
-                {{ wallet.address.slice(0, 6) + '...' + wallet.address.slice(-4) }}
-              </span>
-              <span v-else-if="wallet.connected">Connected</span>
-              <span class="connect-btn" @click="wallet.connect()" v-else>
-                <span v-if="wallet.connecting">Connecting</span>
-                <span v-else>Connect Wallet</span>
-              </span>
-            </b-nav-item>
-          </b-navbar-nav>
-        </div>
-      </div>
-    </nav>
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item-dropdown class="me-3" text="Switch Network" toggle-class="text-decoration-none" no-caret>
+            <b-dropdown-item :href="v" v-for="(v, k) in networks" :key="k">{{ k }}</b-dropdown-item>
+          </b-nav-item-dropdown>
+
+          <span class="address" style="line-height: 45px;" v-if="wallet.address">
+            {{ wallet.address.slice(0, 6) + '...' + wallet.address.slice(-4) }}
+          </span>
+          <b-nav-item class="connect-btn d-none d-sm-block" @click="wallet.connect()" v-else>
+            <span v-if="wallet.connected">Connected</span>
+            <span v-else-if="wallet.connecting">Connecting</span>
+            <span v-else>Connect Wallet</span>
+          </b-nav-item>
+        </b-navbar-nav>
+      </b-navbar>
+    </div>
   </header>
 
   <RouterView class="main" />
@@ -87,7 +91,8 @@ provide('wallet', wallet)
 </template>
 
 <style scoped lang="scss">
-.header-connect {
+
+.connect-btn {
   border: 1px solid #fff;
   border-radius: 10px;
   width: 150px;
@@ -137,7 +142,7 @@ footer {
 
   .footer-info-header {
     font-size: large;
-    font-weight:bold;
+    font-weight: bold;
   }
 }
 </style>
