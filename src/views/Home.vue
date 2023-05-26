@@ -190,7 +190,7 @@
 import Web3 from 'web3'
 import BN from 'bn.js'
 import clipboardCopy from '../utils/copy-text'
-const blockList = ['gateiowallet', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'okbtothemoon']
+const blockList = ['eosbndeposit', 'gateiowallet', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'okbtothemoon']
 const warningList = ['huobideposit']
 
 export default {
