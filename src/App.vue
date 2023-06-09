@@ -2,6 +2,7 @@
 import { provide, reactive, ref, inject } from 'vue'
 import { RouterView } from 'vue-router'
 
+var env = location.host === 'bridge.evm.eosnetwork.com' ? 'MAINNET' : 'TESTNET'
 const i18n = inject('i18n')
 const wallet = reactive({
   connected: false,
@@ -9,6 +10,11 @@ const wallet = reactive({
   connect: null
 })
 provide('wallet', wallet)
+
+const networks = {
+  "Testnet": 'https://bridge.testnet.evm.eosnetwork.com',
+  "Mainnet": 'https://bridge.evm.eosnetwork.com'
+}
 const lang = ref(i18n.global.locale.value || 'en')
 const langs = {
   en: 'English',
@@ -26,9 +32,13 @@ const selectLang = (val) => {
     <div class="container">
       <b-navbar dark toggleable="sm">
         <a class="navbar-brand" href="">
-          <img src="./assets/logo.svg" alt="" style="height: 45px;">
+          <img v-if="env === 'TESTNET'" src="./assets/eos_evm_testnet_logo.svg" alt="" style="filter:invert(1); height: 45px;">
+          <img v-else src="./assets/eos_evm_logo.svg" alt="" style="filter:invert(1); height: 45px;">
         </a>
         <b-navbar-nav class="ml-auto">
+          <b-nav-item-dropdown class="me-3" text="Switch Network" toggle-class="text-decoration-none" no-caret>
+            <b-dropdown-item :href="v" v-for="(v, k) in networks" :key="k">{{ k }}</b-dropdown-item>
+          </b-nav-item-dropdown>
           <b-nav-item-dropdown class="me-3" no-caret strategy="fixed" toggle-class="locale">
             <template #button-content>
               <fa icon="language"/>
@@ -37,7 +47,7 @@ const selectLang = (val) => {
             <b-dropdown-item @click="selectLang(k)" v-for="(v, k) in langs" :key="k">{{v}}</b-dropdown-item>
           </b-nav-item-dropdown>
           <span class="address" style="line-height: 45px;" v-if="wallet.address">
-            {{wallet.address.slice(0, 6) + '...' + wallet.address.slice(-4)}}
+            {{ wallet.address.slice(0, 6) + '...' + wallet.address.slice(-4) }}
           </span>
           <b-nav-item class="connect-btn d-none d-sm-block" @click="wallet.connect()" v-else>
             <span v-if="wallet.connected">Connected</span>
@@ -55,7 +65,8 @@ const selectLang = (val) => {
     <div class="container">
       <b-row class="mb-4">
         <b-col sm="7" class="text-center text-sm-start">
-          <img class="mb-3" src="./assets/logo.svg" alt="" style="height: 45px;">
+          <img v-if="env === 'TESTNET'" class="mb-3" src="./assets/eos_evm_testnet_logo.svg" alt="" style="filter:invert(1); height: 45px;">
+          <img v-else class="mb-3" src="./assets/eos_evm_logo.svg" alt="" style="filter:invert(1); height: 45px;">
         </b-col>
         <b-col sm="2" class="text-left" style="position: relative">
 
@@ -97,7 +108,8 @@ const selectLang = (val) => {
 </template>
 
 <style scoped lang="scss">
-.connect-btn:deep(.nav-link) {
+
+.connect-btn {
   border: 1px solid #fff;
   border-radius: 10px;
   text-align: center;

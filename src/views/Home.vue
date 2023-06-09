@@ -60,6 +60,9 @@
                   <div class="form-text mb-2">{{$t('home.destinationAccountDesc')}}</div>
                   <input type="text" id="address" class="form-control select" @change="calcFee" v-model="targetAddress"
                     maxlength="13" list="addresses">
+                  <div class="form-text font-monospace" v-if='extraWarning!==""'>
+                    <span style="color: red">{{ extraWarning }}</span>
+                  </div>
                   <div class="form-text font-monospace" v-if="addressEvm">
                     <span v-if="addressEvm.message">{{ addressEvm.message }}</span>
                     <span v-else>{{ addressEvm }}</span>
@@ -83,7 +86,7 @@
 
           <div class="d-grid mt-4">
             <b-button variant="primary" @click="transfer" class="transfer-btn"
-              :disabled="!addressEvm || submitting || finished || exceeded || !transferValue">
+              :disabled="disableTransfer">
               <span v-if="submitting">{{$t('home.transferOngoing')}}</span>
               <span v-else-if="finished">{{$t('home.transferSuccess')}}</span>
               <span v-else>{{$t('home.transfer')}}</span>
@@ -187,6 +190,8 @@
 import Web3 from 'web3'
 import BN from 'bn.js'
 import clipboardCopy from '../utils/copy-text'
+const blockList = ['eosbndeposit', 'gateiowallet', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'okbtothemoon']
+const warningList = ['huobideposit']
 
 export default {
   name: 'home',
@@ -204,7 +209,8 @@ export default {
       tab: '',
       submitting: false,
       finished: false,
-      transactionError: ''
+      transactionError: '',
+      extraWarning: ''
     }
   },
   created() {
@@ -237,14 +243,25 @@ export default {
     }
   },
   computed: {
+    disableTransfer() {
+      return !this.addressEvm || this.addressEvm instanceof Error || this.submitting || this.finished || this.exceeded || !this.transferValue
+    },
     addressEvm() {
       if (!this.targetAddress) {
+        this.extraWarning = ''
         return ''
       }
-      const blockList = ['binancecleos', 'huobideposit', 'okbtothemoon']
+      
       if (blockList.includes(this.targetAddress)) {
         return new Error(this.$t('home.cexNotSupported'))
       }
+      
+      if (warningList.includes(this.targetAddress)) {
+        this.extraWarning = 'Minimum transfer limits may apply when transfering to CEX!'
+      } else {
+        this.extraWarning = ''
+      }
+
       return this.convertAddress(this.targetAddress)
     },
     transferValue() {
@@ -268,8 +285,10 @@ export default {
     }
   },
   methods: {
+    
+
     async calcFee() {
-      if (!this.addressEvm) {
+      if (this.disableTransfer) {
         return
       }
       this.gasPrice = await this.web3.eth.getGasPrice()
