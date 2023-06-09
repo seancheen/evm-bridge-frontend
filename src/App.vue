@@ -36,7 +36,7 @@ const selectLang = (val) => {
           <img v-else src="./assets/eos_evm_logo.svg" alt="" style="filter:invert(1); height: 45px;">
         </a>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown class="me-3" text="Switch Network" toggle-class="text-decoration-none" no-caret>
+          <b-nav-item-dropdown class="me-3" no-caret strategy="fixed" text="Switch Network" toggle-class="text-decoration-none" >
             <b-dropdown-item :href="v" v-for="(v, k) in networks" :key="k">{{ k }}</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown class="me-3" no-caret strategy="fixed" toggle-class="locale">
