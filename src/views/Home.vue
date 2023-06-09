@@ -257,7 +257,7 @@ export default {
       }
       
       if (warningList.includes(this.targetAddress)) {
-        this.extraWarning = 'Minimum transfer limits may apply when transfering to CEX!'
+        this.extraWarning = this.$t('home.cexExtraWarning')
       } else {
         this.extraWarning = ''
       }

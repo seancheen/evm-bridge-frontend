@@ -1,6 +1,7 @@
 import { createI18n } from 'vue-i18n'
 const messages = {
   en: {
+    'home.switchNetwork': 'Switch Network',
     'home.withdraw': 'Withdraw',
     'home.deposit': 'Deposit',
     'home.from': 'From',
@@ -43,7 +44,7 @@ const messages = {
     'home.addressCheck.invalid13Char': 'Invalid 13th character',
 
     'home.cexNotSupported' : 'This CEX has not fully support the EOS-EVM bridge yet.',
-
+    'home.cexExtraWarning' : 'Minimum transfer limits may apply when transfering to CEX!',
     'home.swtichNetPrompt' : 'You must switch to correct network to continue.',
     'home.addNetPrompt' : 'Please add the EOS-EVM Network to MetaMask.',
 

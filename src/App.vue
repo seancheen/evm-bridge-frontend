@@ -36,7 +36,7 @@ const selectLang = (val) => {
           <img v-else src="./assets/eos_evm_logo.svg" alt="" style="filter:invert(1); height: 45px;">
         </a>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown class="me-3" no-caret strategy="fixed" text="Switch Network" toggle-class="text-decoration-none" >
+          <b-nav-item-dropdown class="me-3" no-caret strategy="fixed" :text="$t('home.switchNetwork')" toggle-class="text-decoration-none" >
             <b-dropdown-item :href="v" v-for="(v, k) in networks" :key="k">{{ k }}</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown class="me-3" no-caret strategy="fixed" toggle-class="locale">
@@ -50,7 +50,7 @@ const selectLang = (val) => {
             {{ wallet.address.slice(0, 6) + '...' + wallet.address.slice(-4) }}
           </span>
           <b-nav-item class="connect-btn d-none d-sm-block" @click="wallet.connect()" v-else>
-            <span v-if="wallet.connected">Connected</span>
+            <span v-if="wallet.connected">{{$t('home.connected')}}</span>
             <span v-else-if="wallet.connecting">{{$t('home.connecting')}}</span>
             <span v-else>{{$t('home.connectWallet')}}</span>
           </b-nav-item>
