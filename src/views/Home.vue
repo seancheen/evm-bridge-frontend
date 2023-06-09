@@ -160,7 +160,7 @@
                   </i18n-t>
                 </div>
                 <div class="input-group">
-                  <input type="text" class="form-control" disabled :value="address" id="memo">
+                  <input type="text" class="form-control" disabled :value="address" id="deposit-memo">
                   <button class="btn btn-secondary" :disabled="!address" @click="copyText(address)">
                     {{$t('home.copy')}}
                   </button>
