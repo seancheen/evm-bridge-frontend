@@ -1,24 +1,26 @@
 <template>
   <div class="home container">
     <b-tabs class="no-fade" nav-class="nav-tabs-card">
-      <b-tab title="Withdraw">
+      <b-tab :title="$t('home.withdraw')">
         <div class="withdraw" id="withdraw">
           <b-card>
             <b-row align-v="center">
-              <b-col class="text-center text-sm-start" sm="auto" style="min-width: 4em;"><b>From</b></b-col>
+              <b-col class="text-center text-sm-start" sm="auto" style="min-width: 4em;">
+                <b>{{$t('home.from')}}</b>
+              </b-col>
               <b-col>
                 <div class="mb-3">
                   <div class="row align-items-end">
                     <div class="col">
-                      <label for="from">Address</label>
+                      <label for="from">{{$t('home.address')}}</label>
                       <input type="search" id="from" class="form-control" v-model="address" maxlength="42" disabled>
                     </div>
                     <div class="col col-auto">
                       <b-button class="connect-btn" variant="primary" @click="connectWallet()"
                         :disabled="wallet.connecting">
-                        <span v-if="wallet.connected">Connected</span>
-                        <span v-else-if="wallet.connecting">Connecting</span>
-                        <span v-else>Connect Wallet</span>
+                        <span v-if="wallet.connected">{{$t('home.connected')}}</span>
+                        <span v-else-if="wallet.connecting">{{$t('home.connecting')}}</span>
+                        <span v-else>{{$t('home.connectWallet')}}</span>
                       </b-button>
                     </div>
                   </div>
@@ -26,13 +28,14 @@
 
                 <div class="row align-items-center">
                   <div class="col">
-                    <label for="amount">Amount</label>
+                    <label for="amount">{{$t('home.amount')}}</label>
                     <input type="number" id="amount" class="form-control" min="0" :max="balance"
                       :disabled="!wallet.connected" v-model="amount">
                     <div class="form-text">
-                      My balance: <span id="balance" v-if="balance">{{ balance }}</span>
+                      {{$t('home.myBalance')}}
+                      <span id="balance" v-if="balance">{{ balance }}</span>
                     </div>
-                    <div class="text-danger" v-if="exceeded">You don't have enough balance</div>
+                    <div class="text-danger" v-if="exceeded">{{$t('home.insufficient')}}</div>
                   </div>
                   <div class="col-auto">
                     <img src="../assets/eos.png" alt="EOS" style="height: 38px;" draggable="false">
@@ -49,12 +52,12 @@
           <b-card>
             <b-row align-v="center">
               <b-col class="text-center text-sm-start" sm="auto" style="min-width: 4em;">
-                <b>To</b>
+                <b>{{$t('home.to')}}</b>
               </b-col>
               <b-col>
                 <div class="mb-3">
-                  <label for="address">Destination Account</label>
-                  <div class="form-text mb-2">Please paste the EOS Address below:</div>
+                  <label for="address">{{$t('home.destinationAccount')}}</label>
+                  <div class="form-text mb-2">{{$t('home.destinationAccountDesc')}}</div>
                   <input type="text" id="address" class="form-control select" @change="calcFee" v-model="targetAddress"
                     maxlength="13" list="addresses">
                   <div class="form-text font-monospace" v-if='extraWarning!==""'>
@@ -67,14 +70,13 @@
                 </div>
                 <div>
                   <label class="mb-1" for="memo" id="memoTooltip">
-                    memo (optional)
+                    {{$t('home.memoLabel')}}
                     <span class="text-success">
                       <fa icon="info-circle" />
                     </span>
                   </label>
                   <b-popover target="memoTooltip" triggers="hover focus">
-                    Please confirm if the receiving address requires a memo / Tag.
-                    If it is not filled or filled incorrectly, the asset will be lost.
+                    {{$t('home.memoTooltip')}}
                   </b-popover>
                   <input type="text" id="memo" class="form-control" v-model="memo">
                 </div>
@@ -85,46 +87,43 @@
           <div class="d-grid mt-4">
             <b-button variant="primary" @click="transfer" class="transfer-btn"
               :disabled="disableTransfer">
-              <span v-if="submitting">Transfer ongoing...</span>
-              <span v-else-if="finished">Success!</span>
-              <span v-else>Transfer</span>
+              <span v-if="submitting">{{$t('home.transferOngoing')}}</span>
+              <span v-else-if="finished">{{$t('home.transferSuccess')}}</span>
+              <span v-else>{{$t('home.transfer')}}</span>
             </b-button>
           </div>
 
           <div class="mt-2 text-center small text-white">
-            Gas Fee: <span v-if="transferFee">~{{ transferFee }}EOS</span>
+            {{$t('home.gasFee')}}
+            <span v-if="transferFee">~{{ transferFee }}EOS</span>
             <br>
-            Time to Transfer: ~ 5 s
+            {{$t('home.transferTime', ['~5 s'])}}
             <br>
-            Time to Exchanges: ~ 3 mins
+            {{$t('home.exchangeTime', ['~ 3 mins'])}}
           </div>
 
           <div class="transaction-hash" v-if="transactionHash">
-            Last transaction: {{ transactionHash }}
+            {{$t('home.lastTransaction')}}
+            {{ transactionHash }}
           </div>
           <div class="error" v-if="transactionError">{{ transactionError }}</div>
         </div>
       </b-tab>
-      <b-tab title="Deposit">
+      <b-tab :title="$t('home.deposit')">
         <b-card>
           <b-row align-v="center">
             <b-col class="text-center text-sm-start" sm="auto" style="min-width: 4em;">
-              <b>From</b>
+              <b>{{$t('home.from')}}</b>
             </b-col>
             <div class="col">
               <span style="color: red">
-                <p v-if="env === 'TESTNET'">Warning! This is the TESTNET.</p>
-                <p v-else>Warning! This is the MAINNET.</p>
+                <p v-if="env === 'TESTNET'">{{$t('home.netWarning.testnet')}}</p>
+                <p v-else>{{$t('home.netWarning.mainnet')}}</p>
 
-                <p>Please confirm that your wallet is connected to the
-                  correct network before making a transfer. Using the wrong network may result in potential loss of
-                  assets.</p>
+                <p>{{$t('home.netWarning.desc')}}</p>
               </span>
-              <p>Please use a wallet that supports the EOS Network, such as Anchor, Wombat, Tokenpocket or a centralized
-                exchange such as Binance, Coinbase, etc.</p>
-              <p>
-                To transfer funds to the following EOS contract address, please fill in the EVM destination address in the
-                memo to complete the deposit to EVM.</p>
+              <p>{{$t('home.eos2evmDesc.p1')}}</p>
+              <p>{{$t('home.eos2evmDesc.p2')}}</p>
             </div>
           </b-row>
         </b-card>
@@ -134,36 +133,36 @@
         <b-card class="mt-3">
           <b-row align-v="center">
             <b-col class="text-center text-sm-start" sm="auto" style="min-width: 4em;">
-              <b>To</b>
+              <b>{{$t('home.to')}}</b>
             </b-col>
             <div class="col">
               <div class="mb-3">
-                <label>Destination Account</label>
-                <div class="form-text">Please use the EOS Address below:</div>
+                <label>{{$t('home.destinationAccount')}}</label>
+                <div class="form-text">{{$t('home.destinationAccountDescCopy')}}</div>
                 <div class="row align-items-end">
                   <div class="col">
                     <div class="input-group">
                       <input type="search" class="form-control" disabled value="eosio.evm" id="addr">
-                      <button class="btn btn-secondary" @click="copyText('eosio.evm')">Copy</button>
+                      <button class="btn btn-secondary" @click="copyText('eosio.evm')">{{$t('home.copy')}}</button>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="mb-3">
-                <label>Transfer memo / Destination Tag</label>
+                <label>{{$t('home.depositMemoLabel')}}</label>
                 <div class="form-text">
-                  Please use the desitination EVM addres: <br>
-                  <span v-if="!address">
+                  {{$t('home.addressTitle')}}<br>
+                  <i18n-t keypath="home.addressDesc" v-if="!address">
                     <b-link @click="connectWallet" :disabled="wallet.connecting">
                       <fa icon="spinner" spin v-if="wallet.connecting" />
-                      Connect EVM wallet
+                      {{$t('home.connectEvmWallet')}}
                     </b-link>
-                    to display your address.
-                  </span>
+                  </i18n-t>
                 </div>
                 <div class="input-group">
-                  <input type="text" class="form-control" disabled :value="address" id="memo">
-                  <button class="btn btn-secondary" :disabled="!address" @click="copyText(address)">Copy
+                  <input type="text" class="form-control" disabled :value="address" id="deposit-memo">
+                  <button class="btn btn-secondary" :disabled="!address" @click="copyText(address)">
+                    {{$t('home.copy')}}
                   </button>
                 </div>
 
@@ -173,13 +172,14 @@
         </b-card>
 
         <div class="d-grid mt-4 text-center small text-white">
-          Send the transacion and it's done!
+          {{$t('home.depositDesc')}}
         </div>
 
         <div class="mt-2 text-center small text-white">
-          <span>Bridge Fee: 0.01 EOS</span>
+          {{$t('home.bridgeFee')}}
+          <span>0.01 EOS</span>
           <br>
-          Time to Transfer: ~ 5 s
+          {{$t('home.transferTime', ['~ 5 s'])}}
         </div>
       </b-tab>
     </b-tabs>
@@ -253,12 +253,11 @@ export default {
       }
       
       if (blockList.includes(this.targetAddress)) {
-        this.extraWarning = ''
-        return new Error('This CEX has not fully support the EOS-EVM bridge yet.')
+        return new Error(this.$t('home.cexNotSupported'))
       }
       
       if (warningList.includes(this.targetAddress)) {
-        this.extraWarning = 'Minimum transfer limits may apply when transfering to CEX!'
+        this.extraWarning = this.$t('home.cexExtraWarning')
       } else {
         this.extraWarning = ''
       }
@@ -312,20 +311,18 @@ export default {
       console.log(chainId)
       if (chainId != targetChainid) {
         try {
-          window.alert('You must switch to correct network to continue.')
+          window.alert(this.$t('home.swtichNetPrompt'))
           await Web3.givenProvider.request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: targetChainidHEX }],
           });
-          console.log("You have switched to the right network.")
 
         } catch (switchError) {
 
           // The network has not been added to MetaMask
           if (switchError.code === 4902) {
-            console.log("Please add the EOS-EVM Network to MetaMask.")
 
-            if (window.confirm("Please add the EOS-EVM Network to MetaMask.")) {
+            if (window.confirm(this.$t('home.addNetPrompt'))) {
               await Web3.givenProvider.request({
                 method: 'wallet_addEthereumChain',
                 params: [{
@@ -399,7 +396,7 @@ export default {
       try {
         this.submitting = true
         this.transactionHash = ''
-        if (!window.confirm(`You are going to transfer ${this.amount} EOS to ${this.targetAddress}`)) {
+        if (!window.confirm(this.$t('home.transferConfirm', [this.amount, this.targetAddress]))) {
           return
         }
         this.gas = await this.web3.eth.estimateGas({
@@ -434,12 +431,12 @@ export default {
     },
     convertAddress(source) {
       try {
-        return uint64ToAddr(strToUint64(source))
+        return uint64ToAddr(strToUint64(source, this.$t))
       } catch (err) {
         return err
       }
 
-      function charToSymbol(c) {
+      function charToSymbol(c, t) {
         const a = 'a'.charCodeAt(0)
         const z = 'z'.charCodeAt(0)
         const one = '1'.charCodeAt(0)
@@ -454,10 +451,10 @@ export default {
         if (c === '.') {
           return 0
         }
-        throw new Error('Address include illegal character')
+        throw new Error(t('home.addressCheck.invalidAddress'))
       }
 
-      function strToUint64(str) {
+      function strToUint64(str, t) {
         var n = new BN()
         var i = str.length
         if (i >= 13) {
@@ -466,15 +463,15 @@ export default {
 
           // The 13th character must be in the range [.1-5a-j] because it needs to be encoded
           // using only four bits (64_bits - 5_bits_per_char * 12_chars).
-          n = new BN(charToSymbol(str[12]))
+          n = new BN(charToSymbol(str[12], t))
           if (n >= 16) {
-            throw new Error('Invalid 13th character')
+            throw new Error(t('home.addressCheck.invalid13Char'))
           }
         }
         // Encode full-range characters.
 
         while (--i >= 0) {
-          n = n.or(new BN(charToSymbol(str[i])).shln((64 - 5 * (i + 1))))
+          n = n.or(new BN(charToSymbol(str[i]), t).shln((64 - 5 * (i + 1))))
         }
         return n.toString(16, 16)
       }
@@ -485,7 +482,7 @@ export default {
     },
     copyText(val) {
       return clipboardCopy(val).then(() => {
-        this.$alert.success('Address copied')
+        this.$alert.success(this.$t('home.addrCopied'))
       })
     }
   }

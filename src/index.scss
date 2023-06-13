@@ -67,3 +67,7 @@ a.disabled {
   user-select: none;
   pointer-events: none;
 }
+
+.dropdown-toggle-no-caret:after {
+  display: none !important;
+}
