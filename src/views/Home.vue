@@ -103,9 +103,19 @@
 
           <div class="transaction-hash" v-if="transactionHash">
             {{ $t('home.lastTransaction') }}
-            {{ transactionHash }}
             <br>
-            {{ eosHash }}
+            {{ transactionHash.slice(0, 6) + '...' + transactionHash.slice(-4) }}
+            <br>
+            <a class="dummy-link" @click="copyText(transactionHash)">{{ $t('home.copyEvmTx') }}</a> &nbsp&nbsp<a :href="getEvmTxExplorerUrl(transactionHash)" target="_blank" rel="noopener noreferrer">{{ $t('home.viewEvmTx') }}</a>
+            <br>
+            {{ $t('home.eosTx') }}
+            <br>
+            <span v-if="eosHash && eosHash != 'error'">{{ eosHash.slice(0, 4) + '...' + eosHash.slice(-4) }}
+              <br>
+            <a class="dummy-link" @click="copyText(eosHash)">{{ $t('home.copyEosTx') }}</a> &nbsp&nbsp<a :href="getEosTxExplorerUrl(eosHash)" target="_blank" rel="noopener noreferrer">{{ $t('home.viewEosTx') }}</a>
+          </span>
+            <span v-else-if="eosHash == 'error'">{{ $t('home.eosTxError') }}</span>
+            <span v-else>{{ $t('home.eosTxPending') }}</span>
           </div>
           <div class="error" v-if="transactionError">{{ transactionError }}</div>
         </div>
@@ -401,10 +411,20 @@ export default {
       ).join("");
     },
 
+    getEvmTxExplorerUrl(tx) {
+      let targetExplorerAddr = (this.env === "TESTNET" ? "https://explorer.testnet.evm.eosnetwork.com" : "https://explorer.evm.eosnetwork.com");
+      return targetExplorerAddr + '/tx/' + tx
+    },
+
+    getEosTxExplorerUrl(tx) {
+      let targetExplorerAddr = (this.env === "TESTNET" ? "https://jungle4.eosq.eosnation.io" : "https://eos.eosq.eosnation.io");
+      return targetExplorerAddr + '/tx/' + tx
+    },
+
     async transfer() {
       try {
         this.submitting = true
-        this.transactionHash = ''
+        
         if (!window.confirm(this.$t('home.transferConfirm', [this.amount, this.targetAddress]))) {
           return
         }
@@ -427,7 +447,7 @@ export default {
         }).on('receipt', async function (receipt) {
           // Receipt contains tx hash.
           vm.transactionHash = receipt.transactionHash
-
+          vm.eosHash = ''
           // Get block containing the tx/
           const blockinfo = await vm.web3.eth.getBlock(receipt.blockHash)
 
@@ -472,6 +492,9 @@ export default {
           // Should only found one though....
           if (txs.length > 0) {
             vm.eosHash = txs[0].txid
+          }
+          else {
+            vm.eosHash = "error"
           }
         })
 
@@ -611,5 +634,14 @@ export default {
   .fade {
     transition: none;
   }
+}
+
+.transaction-hash {
+  color: #fff;
+}
+
+.dummy-link {
+  color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
+  cursor: pointer;
 }
 </style>
