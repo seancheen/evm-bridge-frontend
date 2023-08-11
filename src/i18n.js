@@ -50,7 +50,7 @@ const messages = {
     'home.addressCheck.invalidAddress': 'Address includes an illegal character',
     'home.addressCheck.invalid13Char': 'Invalid 13th character',
 
-    'home.cexNotSupported' : 'This CEX does not fully support the EOS EVM bridge yet. Please copy your EOS and EOS EVM tx IDs after transfer to work with your exchange's customer support team.',
+    'home.cexNotSupported' : 'This CEX does not fully support the EOS EVM bridge yet. Please copy your EOS and EOS EVM tx IDs after transfer to work with your exchange\'s customer support team.',
     'home.cexExtraWarning' : 'Minimum transfer limits may apply when transferring to CEX.',
     'home.swtichNetPrompt' : 'You must switch to the correct network to continue.',
     'home.addNetPrompt' : 'Please add the EOS EVM Network to your wallet.',
