@@ -208,8 +208,8 @@ import { Api, JsonRpc, RpcError } from 'enf-eosjs';
 const rpc = new JsonRpc('https://jungle4.api.eosnation.io:443', { fetch });
 const api = new Api({ rpc, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() });
 
-const blockList = ['eosbndeposit', 'gateiowallet', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'okbtothemoon']
-const warningList = ['huobideposit']
+const blockList = []
+const warningList = ['huobideposit', 'eosbndeposit', 'gateiowallet', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'okbtothemoon']
 
 export default {
   name: 'home',
