@@ -174,7 +174,7 @@ const messages = {
     'home.addressCheck.invalidAddress': '地址包含违规字符',
     'home.addressCheck.invalid13Char': '第 13 个字符无效',
 
-    'home.cexNotSupported' :'该 CEX 尚未完全支持 EOS EVM 桥。请在转账后复制您的 EOS 和 EOS EVM 交易 ID，以便与交易所的用户支持团队联系协作。'，
+    'home.cexNotSupported' :'该 CEX 尚未完全支持 EOS EVM 桥。请在转账后复制您的 EOS 和 EOS EVM 交易 ID，以便与交易所的用户支持团队联系协作。',
     'home.cexExtraWarning' :'转账至 CEX 时可能存在最低转账限额。',
     'home.swtichNetPrompt' : '您必须切换到正确的网络才能继续操作。',
     'home.addNetPrompt' :'请在您的钱包中添加 EOS EVM 网络。',
