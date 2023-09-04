@@ -38,7 +38,30 @@
                     <div class="text-danger" v-if="exceeded">{{ $t('home.insufficient') }}</div>
                   </div>
                   <div class="col-auto">
-                    <img src="../assets/eos.png" alt="EOS" style="height: 38px;" draggable="false">
+                    <div  class="connect-btn" >
+                      <b-dropdown variant="outline-secondary" style="height:auto; width:100%;">
+                      <template #button-content >
+                        <div class="my_dropdown-toggle">
+                          <div v-if="tokenName==='EOS'" style="display: inline-block;">
+                            <img src="../assets/eos.png" alt="LOGO-EOS" style="margin-right:5px; height:25px; width:25px;object-fit:contain;" draggable="false">EOS
+                          </div>
+                          <div v-else-if="tokenName==='USDT'" style="display: inline-block;">
+                            <img src="../assets/usdt.png" alt="LOGO-USDT" style="margin-right:5px; height:25px; width:25px;object-fit:contain;" draggable="false">USDT
+                          </div>
+                          <div v-else>
+                            Error!
+                          </div>
+                        </div>
+                        
+                      </template>
+                      <b-dropdown-item @click="onSelectToken('EOS')">
+                        <img src="../assets/eos.png" alt="LOGO-EOS" style="margin-right:5px; height:25px; width:25px;object-fit:contain;" draggable="false">EOS
+                      </b-dropdown-item>
+                      <b-dropdown-item @click="onSelectToken('USDT')" :disabled="erc20_contract == null">
+                        <img src="../assets/usdt.png" alt="LOGO-USDT" style="margin-right:5px; height:25px; width:25px;object-fit:contain;" draggable="false">USDT
+                      </b-dropdown-item>
+                    </b-dropdown>
+                    </div>
                   </div>
                 </div>
               </b-col>
@@ -106,14 +129,18 @@
             <br>
             {{ transactionHash.slice(0, 6) + '...' + transactionHash.slice(-4) }}
             <br>
-            <a class="dummy-link" @click="copyText(transactionHash)">{{ $t('home.copyEvmTx') }}</a> &nbsp&nbsp<a :href="getEvmTxExplorerUrl(transactionHash)" target="_blank" rel="noopener noreferrer">{{ $t('home.viewEvmTx') }}</a>
+            <a class="dummy-link" @click="copyText(transactionHash)">{{ $t('home.copyEvmTx') }}</a> &nbsp&nbsp<a
+              :href="getEvmTxExplorerUrl(transactionHash)" target="_blank" rel="noopener noreferrer">{{
+                $t('home.viewEvmTx') }}</a>
             <br>
             {{ $t('home.eosTx') }}
             <br>
             <span v-if="eosHash && eosHash != 'error'">{{ eosHash.slice(0, 4) + '...' + eosHash.slice(-4) }}
               <br>
-            <a class="dummy-link" @click="copyText(eosHash)">{{ $t('home.copyEosTx') }}</a> &nbsp&nbsp<a :href="getEosTxExplorerUrl(eosHash)" target="_blank" rel="noopener noreferrer">{{ $t('home.viewEosTx') }}</a>
-          </span>
+              <a class="dummy-link" @click="copyText(eosHash)">{{ $t('home.copyEosTx') }}</a> &nbsp&nbsp<a
+                :href="getEosTxExplorerUrl(eosHash)" target="_blank" rel="noopener noreferrer">{{ $t('home.viewEosTx')
+                }}</a>
+            </span>
             <span v-else-if="eosHash == 'error'">{{ $t('home.eosTxError') }}</span>
             <span v-else>{{ $t('home.eosTxPending') }}</span>
           </div>
@@ -201,6 +228,7 @@
 import Web3 from 'web3'
 import BN from 'bn.js'
 import clipboardCopy from '../utils/copy-text'
+import erc20_abi from '../erc20.json'
 
 import { Api, JsonRpc, RpcError } from 'enf-eosjs';
 
@@ -229,7 +257,10 @@ export default {
       submitting: false,
       finished: false,
       transactionError: '',
-      extraWarning: ''
+      extraWarning: '',
+      tokenName: 'EOS',
+      erc20_addr: '',
+      erc20_contract: null,
     }
   },
   created() {
@@ -327,6 +358,12 @@ export default {
       let targetApiAddr = (this.env === "TESTNET" ? "https://api.testnet.evm.eosnetwork.com/" : "https://api.evm.eosnetwork.com/");
       let targetExplorerAddr = (this.env === "TESTNET" ? "https://explorer.testnet.evm.eosnetwork.com" : "https://explorer.evm.eosnetwork.com");
       let targetNetworkName = (this.env === "TESTNET" ? "EOS-EVM Testnet2" : "EOS-EVM");
+      this.erc20_addr = (this.env === "TESTNET" ? "0x586898a6F226b42aC0b7d6c9Dd234813bB75b646" : "");
+      this.erc20_contract = null;
+      if (this.erc20_addr != "") {
+        this.erc20_contract = new this.web3.eth.Contract(erc20_abi, this.erc20_addr);
+      }
+        
       console.log(chainId)
       if (chainId != targetChainid) {
         try {
@@ -392,12 +429,29 @@ export default {
         const address = this.address
         this.wallet.connecting = true
         this.wallet.connected = false
-        const wei = await this.web3.eth.getBalance(address)
-        this.balance = this.web3.utils.fromWei(wei, 'ether')
+        if (this.tokenName === 'EOS') {
+          const wei = await this.web3.eth.getBalance(address)
+          this.balance = this.web3.utils.fromWei(wei, 'ether')
+        }
+        else if (this.tokenName === 'USDT') {
+          const wei = await this.erc20_contract.methods.balanceOf(address).call()
+          this.balance = this.web3.utils.fromWei(wei, 'mwei')
+        }
+
         this.wallet.connected = true
       } finally {
         this.wallet.connecting = false
       }
+    },
+
+    onSelectToken(token) {
+      if (token === "EOS" || token === "USDT") {
+        if (token == "USDT" && this.erc20_contract == null ) {
+          return;
+        }
+        this.tokenName = token
+        this.getBalance()
+      } 
     },
 
     stringToUTF8Bytes(string) {
@@ -421,30 +475,54 @@ export default {
       return targetExplorerAddr + '/tx/' + tx
     },
 
-    async transfer() {
-      try {
-        this.submitting = true
-        
-        if (!window.confirm(this.$t('home.transferConfirm', [this.amount, this.targetAddress]))) {
-          return
-        }
-        this.gas = await this.web3.eth.estimateGas({
+    prepareTx(gaslimit) {
+      
+      if (this.tokenName === 'EOS') {
+        let tx = {
           from: this.address,
           to: this.addressEvm,
           value: this.transferValue,
           gasPrice: this.gasPrice,
           data: this.bytesToHex(this.stringToUTF8Bytes(this.memo)),
-        });
-        var vm = this
+        }
 
-        // Send EVM Transaction
-        await this.web3.eth.sendTransaction({
+        if (gaslimit != null) {
+          tx.gas = gaslimit;
+        }
+        return tx
+      } 
+      else if (this.tokenName === 'USDT'){
+        // USDT
+        let tx = {
           from: this.address,
           to: this.addressEvm,
           value: this.transferValue,
-          gas: this.gas,
-          data: this.bytesToHex(this.stringToUTF8Bytes(this.memo)),
-        }).on('receipt', async function (receipt) {
+          gasPrice: this.gasPrice,
+          data: this.erc20_contract.methods.bridgeTransfer(this.addressEvm, this.transferValue, this.memo).encodeABI(),
+        }
+
+        if (gaslimit != null) {
+          tx.gas = gaslimit;
+        }
+        return tx
+      }
+
+      return {}
+      
+    },
+
+    async transfer() {
+      try {
+        this.submitting = true
+
+        if (!window.confirm(this.$t('home.transferConfirm', [this.amount, this.targetAddress]))) {
+          return
+        }
+        this.gas = await this.web3.eth.estimateGas(this.prepareTx(null));
+        var vm = this
+
+        // Send EVM Transaction
+        await this.web3.eth.sendTransaction(this.prepareTx(this.gas)).on('receipt', async function (receipt) {
           // Receipt contains tx hash.
           vm.transactionHash = receipt.transactionHash
           vm.eosHash = ''
@@ -586,7 +664,7 @@ export default {
 }
 
 .connect-btn {
-  width: 142px;
+  width: 142px !important;
   margin-left: -12px;
 }
 
@@ -643,5 +721,20 @@ export default {
 .dummy-link {
   color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
   cursor: pointer;
+}
+
+.dropdown-toggle::after {
+  content: unset !important;
+}
+
+.my_dropdown-toggle::after {
+    display: inline-block;
+    margin-left: 0.255em;
+    vertical-align: 0.255em;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
 }
 </style>
