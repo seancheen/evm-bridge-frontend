@@ -18,7 +18,8 @@ const networks = {
 const lang = ref(i18n.global.locale.value || 'en')
 const langs = {
   en: 'English',
-  // ko: '한국인'
+  ko: '한국인',
+  zh: '中文'
 }
 const selectLang = (val) => {
   lang.value = val
