@@ -55,7 +55,7 @@ const messages = {
     'home.swtichNetPrompt' : 'You must switch to the correct network to continue.',
     'home.addNetPrompt' : 'Please add the EOS EVM Network to your wallet.',
 
-    'home.transferConfirm' : 'You are going to transfer {0} EOS to {1}',
+    'home.transferConfirm' : 'You are going to transfer {0} {1} to {2}',
 
     'navbar.about': 'About',
     'navbar.docs': 'Docs',
@@ -117,7 +117,7 @@ const messages = {
     'home.swtichNetPrompt' : '계속 진행하기 위해서는 올바른 네트워크로 전환해야 합니다.',
     'home.addNetPrompt' : 'EOS EVM 네트워크 지갑에 추가하세요',
 
-    'home.transferConfirm' : '귀하의 {0} EOS를 {1}로 전송하려고 합니다.',
+    'home.transferConfirm' : '귀하의 {0} {1}를 {2}로 전송하려고 합니다.',
 
     'navbar.about': '정보t',
     'navbar.docs': '문서',
@@ -179,7 +179,7 @@ const messages = {
     'home.swtichNetPrompt' : '您必须切换到正确的网络才能继续操作。',
     'home.addNetPrompt' :'请在您的钱包中添加 EOS EVM 网络。',
 
-    'home.transferConfirm' : '您即将把 {0} EOS 转移至 {1}',
+    'home.transferConfirm' : '您即将把 {0} {1} 转移至 {2}',
 
     'navbar.about': '关于我们',
     'navbar.docs': '文档',

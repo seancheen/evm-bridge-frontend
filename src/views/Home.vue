@@ -180,8 +180,8 @@
                 <div class="row align-items-end">
                   <div class="col">
                     <div class="input-group">
-                      <input type="search" class="form-control" disabled value="eosio.evm" id="addr">
-                      <button class="btn btn-secondary" @click="copyText('eosio.evm')">{{ $t('home.copy') }}</button>
+                      <input type="search" class="form-control" disabled value="eosio.evmin" id="addr">
+                      <button class="btn btn-secondary" @click="copyText('eosio.evmin')">{{ $t('home.copy') }}</button>
                     </div>
                   </div>
                 </div>
@@ -515,7 +515,7 @@ export default {
       try {
         this.submitting = true
 
-        if (!window.confirm(this.$t('home.transferConfirm', [this.amount, this.targetAddress]))) {
+        if (!window.confirm(this.$t('home.transferConfirm', [this.amount, this.tokenName, this.targetAddress]))) {
           return
         }
         this.gas = await this.web3.eth.estimateGas(this.prepareTx(null));
