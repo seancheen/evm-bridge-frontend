@@ -475,7 +475,7 @@ export default {
       return targetExplorerAddr + '/tx/' + tx
     },
 
-    prepareTx(gaslimit) {
+    async prepareTx(gaslimit) {
       
       if (this.tokenName === 'EOS') {
         let tx = {
@@ -493,10 +493,11 @@ export default {
       } 
       else if (this.tokenName === 'USDT'){
         // USDT
+        const fee = await this.erc20_contract.methods.egressFee().call()
         let tx = {
           from: this.address,
-          to: this.addressEvm,
-          value: this.transferValue,
+          to: this.erc20_addr,
+          value: fee,
           gasPrice: this.gasPrice,
           data: this.erc20_contract.methods.bridgeTransfer(this.addressEvm, this.transferValue, this.memo).encodeABI(),
         }
@@ -518,11 +519,11 @@ export default {
         if (!window.confirm(this.$t('home.transferConfirm', [this.amount, this.tokenName, this.targetAddress]))) {
           return
         }
-        this.gas = await this.web3.eth.estimateGas(this.prepareTx(null));
+        this.gas = await this.web3.eth.estimateGas(await this.prepareTx(null));
         var vm = this
 
         // Send EVM Transaction
-        await this.web3.eth.sendTransaction(this.prepareTx(this.gas)).on('receipt', async function (receipt) {
+        await this.web3.eth.sendTransaction(await this.prepareTx(this.gas)).on('receipt', async function (receipt) {
           // Receipt contains tx hash.
           vm.transactionHash = receipt.transactionHash
           vm.eosHash = ''
