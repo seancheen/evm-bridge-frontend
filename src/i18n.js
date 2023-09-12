@@ -46,6 +46,7 @@ const messages = {
     'home.netWarning.desc': 'Please confirm that your wallet is connected to the correct network before making a transfer. Using the wrong network may result in loss of tokens.',
     'home.eos2evmDesc.p1': 'Please use a wallet that supports the EOS Network, such as Anchor, Wombat, TokenPocket or a centralized exchange such as Binance, Coinbase, etc.',
     'home.eos2evmDesc.p2': 'To transfer funds to the following EOS Contract Address, please fill in the Destination EOS EVM Address in the memo to complete the deposit to EOS EVM.',
+    'home.eos2evmDesc.p3': 'Officially supported tokens include EOS and USDT (EOS) at this time.',
 
     'home.addressCheck.invalidAddress': 'Address includes an illegal character',
     'home.addressCheck.invalid13Char': 'Invalid 13th character',

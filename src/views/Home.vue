@@ -162,6 +162,7 @@
               </span>
               <p>{{ $t('home.eos2evmDesc.p1') }}</p>
               <p>{{ $t('home.eos2evmDesc.p2') }}</p>
+              <p>{{ $t('home.eos2evmDesc.p3') }}</p>
             </div>
           </b-row>
         </b-card>
