@@ -343,13 +343,7 @@ export default {
         return
       }
       this.gasPrice = await this.web3.eth.getGasPrice()
-      this.gas = await this.web3.eth.estimateGas({
-        from: this.address,
-        to: this.addressEvm,
-        value: this.transferValue,
-        gasPrice: this.gasPrice,
-        data: this.bytesToHex(this.stringToUTF8Bytes(this.memo)),
-      })
+      this.gas = await this.web3.eth.estimateGas(await this.prepareTx(null));
     },
 
     async checkChainID() {
