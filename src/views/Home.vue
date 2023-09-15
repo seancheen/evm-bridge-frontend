@@ -38,29 +38,51 @@
                     <div class="text-danger" v-if="exceeded">{{ $t('home.insufficient') }}</div>
                   </div>
                   <div class="col-auto">
-                    <div  class="connect-btn" >
+                    <div class="connect-btn">
                       <b-dropdown variant="outline-secondary" style="height:auto; width:100%;">
-                      <template #button-content >
-                        <div class="my_dropdown-toggle">
-                          <div v-if="tokenName==='EOS'" style="display: inline-block;">
-                            <img src="../assets/eos.png" alt="LOGO-EOS" style="margin-right:5px; height:25px; width:25px;object-fit:contain;" draggable="false">EOS
+                        <template #button-content>
+                          <div class="my_dropdown-toggle">
+                            <div v-if="tokenName === 'EOS'" style="display: inline-block;">
+                              <img src="../assets/eos.png" alt="LOGO-EOS"
+                                style="margin-right:5px; height:25px; width:25px;object-fit:contain;"
+                                draggable="false">EOS
+                            </div>
+                            <div v-else-if="tokenName === 'USDT'" style="display: inline-block;">
+
+                              <div v-if="env === 'TESTNET'">
+                                <img src="../assets/jungle.svg" alt="LOGO-JUNGLE"
+                                  style="filter: brightness(0) saturate(100%); margin-right:5px; height:25px; width:25px;object-fit:contain;"
+                                  draggable="false">JUNGLE
+                              </div>
+                              <div v-else>
+                                <img src="../assets/usdt.png" alt="LOGO-USDT"
+                                  style="margin-right:5px; height:25px; width:25px;object-fit:contain;"
+                                  draggable="false">USDT
+                              </div>
+                            </div>
+                            <div v-else>
+                              Error!
+                            </div>
                           </div>
-                          <div v-else-if="tokenName==='USDT'" style="display: inline-block;">
-                            <img src="../assets/usdt.png" alt="LOGO-USDT" style="margin-right:5px; height:25px; width:25px;object-fit:contain;" draggable="false">USDT
+
+                        </template>
+                        <b-dropdown-item @click="onSelectToken('EOS')">
+                          <img src="../assets/eos.png" alt="LOGO-EOS"
+                            style="margin-right:5px; height:25px; width:25px;object-fit:contain;" draggable="false">EOS
+                        </b-dropdown-item>
+                        <b-dropdown-item @click="onSelectToken('USDT')" :disabled="erc20_contract == null">
+                          <div v-if="env === 'TESTNET'">
+                            <img src="../assets/jungle.svg" alt="LOGO-JUNGLE"
+                              style="filter: brightness(0) saturate(100%); margin-right:5px; height:25px; width:25px;object-fit:contain;"
+                              draggable="false">JUNGLE
                           </div>
                           <div v-else>
-                            Error!
+                            <img src="../assets/usdt.png" alt="LOGO-USDT"
+                              style="margin-right:5px; height:25px; width:25px;object-fit:contain;" draggable="false">USDT
                           </div>
-                        </div>
-                        
-                      </template>
-                      <b-dropdown-item @click="onSelectToken('EOS')">
-                        <img src="../assets/eos.png" alt="LOGO-EOS" style="margin-right:5px; height:25px; width:25px;object-fit:contain;" draggable="false">EOS
-                      </b-dropdown-item>
-                      <b-dropdown-item @click="onSelectToken('USDT')" :disabled="erc20_contract == null">
-                        <img src="../assets/usdt.png" alt="LOGO-USDT" style="margin-right:5px; height:25px; width:25px;object-fit:contain;" draggable="false">USDT
-                      </b-dropdown-item>
-                    </b-dropdown>
+
+                        </b-dropdown-item>
+                      </b-dropdown>
                     </div>
                   </div>
                 </div>
@@ -320,7 +342,12 @@ export default {
         return null
       }
       try {
-        return this.web3.utils.toBN(this.web3.utils.toWei(this.amount.toString(), 'ether'))
+        if (this.tokenName == "EOS") {
+          return this.web3.utils.toBN(this.web3.utils.toWei(this.amount.toString(), 'ether'))
+        }
+        else {
+          return this.web3.utils.toBN(this.web3.utils.toWei(this.amount.toString(), 'mwei'))
+        }
       } catch (err) {
         return null
       }
@@ -344,6 +371,9 @@ export default {
       }
       this.gasPrice = await this.web3.eth.getGasPrice()
       this.gas = await this.web3.eth.estimateGas(await this.prepareTx(null));
+      if (this.tokenName != "EOS") {
+        this.gas = new BN(this.gas).mul(new BN(2)).toString()
+      }
     },
 
     async checkChainID() {
@@ -353,12 +383,12 @@ export default {
       let targetApiAddr = (this.env === "TESTNET" ? "https://api.testnet.evm.eosnetwork.com/" : "https://api.evm.eosnetwork.com/");
       let targetExplorerAddr = (this.env === "TESTNET" ? "https://explorer.testnet.evm.eosnetwork.com" : "https://explorer.evm.eosnetwork.com");
       let targetNetworkName = (this.env === "TESTNET" ? "EOS-EVM Testnet2" : "EOS-EVM");
-      this.erc20_addr = (this.env === "TESTNET" ? "0x586898a6F226b42aC0b7d6c9Dd234813bB75b646" : "");
+      this.erc20_addr = (this.env === "TESTNET" ? "0x4ea3b729669bF6C34F7B80E5D6c17DB71F89F21F" : "");
       this.erc20_contract = null;
       if (this.erc20_addr != "") {
         this.erc20_contract = new this.web3.eth.Contract(erc20_abi, this.erc20_addr);
       }
-        
+
       console.log(chainId)
       if (chainId != targetChainid) {
         try {
@@ -441,12 +471,12 @@ export default {
 
     onSelectToken(token) {
       if (token === "EOS" || token === "USDT") {
-        if (token == "USDT" && this.erc20_contract == null ) {
+        if (token == "USDT" && this.erc20_contract == null) {
           return;
         }
         this.tokenName = token
         this.getBalance()
-      } 
+      }
     },
 
     stringToUTF8Bytes(string) {
@@ -471,7 +501,7 @@ export default {
     },
 
     async prepareTx(gaslimit) {
-      
+
       if (this.tokenName === 'EOS') {
         let tx = {
           from: this.address,
@@ -485,8 +515,8 @@ export default {
           tx.gas = gaslimit;
         }
         return tx
-      } 
-      else if (this.tokenName === 'USDT'){
+      }
+      else if (this.tokenName === 'USDT') {
         // USDT
         const fee = await this.erc20_contract.methods.egressFee().call()
         let tx = {
@@ -504,7 +534,7 @@ export default {
       }
 
       return {}
-      
+
     },
 
     async transfer() {
@@ -515,6 +545,10 @@ export default {
           return
         }
         this.gas = await this.web3.eth.estimateGas(await this.prepareTx(null));
+        if (this.tokenName != "EOS") {
+          this.gas = new BN(this.gas).mul(new BN(2)).toString()
+        }
+
         var vm = this
 
         // Send EVM Transaction
@@ -724,13 +758,12 @@ export default {
 }
 
 .my_dropdown-toggle::after {
-    display: inline-block;
-    margin-left: 0.255em;
-    vertical-align: 0.255em;
-    content: "";
-    border-top: 0.3em solid;
-    border-right: 0.3em solid transparent;
-    border-bottom: 0;
-    border-left: 0.3em solid transparent;
-}
-</style>
+  display: inline-block;
+  margin-left: 0.255em;
+  vertical-align: 0.255em;
+  content: "";
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+}</style>
