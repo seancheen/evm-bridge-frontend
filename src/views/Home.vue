@@ -42,45 +42,15 @@
                       <b-dropdown variant="outline-secondary" style="height:auto; width:100%;">
                         <template #button-content>
                           <div class="my_dropdown-toggle">
-                            <div v-if="tokenName === 'EOS'" style="display: inline-block;">
-                              <img src="../assets/eos.png" alt="LOGO-EOS"
-                                style="margin-right:5px; height:25px; width:25px;object-fit:contain;"
-                                draggable="false">EOS
-                            </div>
-                            <div v-else-if="tokenName === 'USDT'" style="display: inline-block;">
-
-                              <div v-if="env === 'TESTNET'">
-                                <img src="../assets/jungle.svg" alt="LOGO-JUNGLE"
-                                  style="filter: brightness(0) saturate(100%); margin-right:5px; height:25px; width:25px;object-fit:contain;"
-                                  draggable="false">JUNGLE
-                              </div>
-                              <div v-else>
-                                <img src="../assets/usdt.png" alt="LOGO-USDT"
-                                  style="margin-right:5px; height:25px; width:25px;object-fit:contain;"
-                                  draggable="false">USDT
-                              </div>
-                            </div>
-                            <div v-else>
-                              Error!
-                            </div>
+                            <img :src="tokenList[selectedToken].logo"
+                              style="margin-right:5px; height:25px; width:25px;object-fit:contain;">
+                            {{ tokenList[selectedToken].name }}
                           </div>
 
                         </template>
-                        <b-dropdown-item @click="onSelectToken('EOS')">
-                          <img src="../assets/eos.png" alt="LOGO-EOS"
-                            style="margin-right:5px; height:25px; width:25px;object-fit:contain;" draggable="false">EOS
-                        </b-dropdown-item>
-                        <b-dropdown-item @click="onSelectToken('USDT')" :disabled="erc20_contract == null">
-                          <div v-if="env === 'TESTNET'">
-                            <img src="../assets/jungle.svg" alt="LOGO-JUNGLE"
-                              style="filter: brightness(0) saturate(100%); margin-right:5px; height:25px; width:25px;object-fit:contain;"
-                              draggable="false">JUNGLE
-                          </div>
-                          <div v-else>
-                            <img src="../assets/usdt.png" alt="LOGO-USDT"
-                              style="margin-right:5px; height:25px; width:25px;object-fit:contain;" draggable="false">USDT
-                          </div>
-
+                        <b-dropdown-item v-for="(item, index) in tokenList" @click="onSelectToken(index)">
+                          <img :src="item.logo" style="margin-right:5px; height:25px; width:25px;object-fit:contain;">
+                          {{ item.name }}
                         </b-dropdown-item>
                       </b-dropdown>
                     </div>
@@ -281,15 +251,32 @@ export default {
       finished: false,
       transactionError: '',
       extraWarning: '',
-      tokenName: 'EOS',
-      erc20_addr: '',
-      erc20_contract: null,
+      tokenList: null,
+      selectedToken: 0,
+      tokenListTestnet: [
+        { name: 'EOS', addr: '', logo: 'images/eos.png' },
+        { name: 'JUNGLE', addr: '0x4ea3b729669bF6C34F7B80E5D6c17DB71F89F21F', logo: 'images/jungle.svg', erc20_contract: null },
+      ],
+      tokenListMainnet: [
+        { name: 'EOS', addr: '', logo: 'images/eos.png' },
+        { name: 'USDT', addr: '', logo: 'images/usdt.png' },
+      ],
     }
   },
   created() {
+
+
     this.wallet.connect = this.connectWallet
 
     this.web3 = new Web3(Web3.givenProvider || new Web3.providers.HttpProvider('http://localhost:8545'))
+
+    this.tokenList = this.env === "TESTNET" ? this.tokenListTestnet : this.tokenListMainnet;
+    this.selectedToken = 0;
+    for (var item of this.tokenList) {
+      if (item.addr != '') {
+        item.erc20_contract = new this.web3.eth.Contract(erc20_abi, item.addr);
+      }
+    }
 
     this.web3.eth.getAccounts().then(async results => {
 
@@ -316,6 +303,7 @@ export default {
     }
   },
   computed: {
+
     disableTransfer() {
       return !this.addressEvm || this.addressEvm instanceof Error || this.submitting || this.finished || this.exceeded || !this.transferValue
     },
@@ -342,7 +330,7 @@ export default {
         return null
       }
       try {
-        if (this.tokenName == "EOS") {
+        if (this.tokenName() == "EOS") {
           return this.web3.utils.toBN(this.web3.utils.toWei(this.amount.toString(), 'ether'))
         }
         else {
@@ -364,6 +352,9 @@ export default {
   },
   methods: {
 
+    erc20_contract() { return this.tokenList[this.selectedToken].erc20_contract; },
+    erc20_addr() { return this.tokenList[this.selectedToken].addr; },
+    tokenName() { return this.tokenList[this.selectedToken].name; },
 
     async calcFee() {
       if (this.disableTransfer) {
@@ -371,7 +362,7 @@ export default {
       }
       this.gasPrice = await this.web3.eth.getGasPrice()
       this.gas = await this.web3.eth.estimateGas(await this.prepareTx(null));
-      if (this.tokenName != "EOS") {
+      if (this.tokenName() != "EOS") {
         this.gas = new BN(this.gas).mul(new BN(2)).toString()
       }
     },
@@ -383,11 +374,8 @@ export default {
       let targetApiAddr = (this.env === "TESTNET" ? "https://api.testnet.evm.eosnetwork.com/" : "https://api.evm.eosnetwork.com/");
       let targetExplorerAddr = (this.env === "TESTNET" ? "https://explorer.testnet.evm.eosnetwork.com" : "https://explorer.evm.eosnetwork.com");
       let targetNetworkName = (this.env === "TESTNET" ? "EOS-EVM Testnet2" : "EOS-EVM");
-      this.erc20_addr = (this.env === "TESTNET" ? "0x4ea3b729669bF6C34F7B80E5D6c17DB71F89F21F" : "");
-      this.erc20_contract = null;
-      if (this.erc20_addr != "") {
-        this.erc20_contract = new this.web3.eth.Contract(erc20_abi, this.erc20_addr);
-      }
+
+
 
       console.log(chainId)
       if (chainId != targetChainid) {
@@ -454,13 +442,17 @@ export default {
         const address = this.address
         this.wallet.connecting = true
         this.wallet.connected = false
-        if (this.tokenName === 'EOS') {
+        if (this.tokenName() === 'EOS') {
           const wei = await this.web3.eth.getBalance(address)
           this.balance = this.web3.utils.fromWei(wei, 'ether')
         }
-        else if (this.tokenName === 'USDT') {
-          const wei = await this.erc20_contract.methods.balanceOf(address).call()
-          this.balance = this.web3.utils.fromWei(wei, 'mwei')
+        else {
+          if ((this.erc20_contract())) {
+            const wei = await this.erc20_contract().methods.balanceOf(address).call()
+            this.balance = this.web3.utils.fromWei(wei, 'mwei')
+          }
+          else { this.balance = null; }
+
         }
 
         this.wallet.connected = true
@@ -469,14 +461,9 @@ export default {
       }
     },
 
-    onSelectToken(token) {
-      if (token === "EOS" || token === "USDT") {
-        if (token == "USDT" && this.erc20_contract == null) {
-          return;
-        }
-        this.tokenName = token
-        this.getBalance()
-      }
+    onSelectToken(index) {
+      this.selectedToken = index;
+      this.getBalance()
     },
 
     stringToUTF8Bytes(string) {
@@ -502,7 +489,7 @@ export default {
 
     async prepareTx(gaslimit) {
 
-      if (this.tokenName === 'EOS') {
+      if (this.tokenName() === 'EOS') {
         let tx = {
           from: this.address,
           to: this.addressEvm,
@@ -516,15 +503,15 @@ export default {
         }
         return tx
       }
-      else if (this.tokenName === 'USDT') {
+      else {
         // USDT
-        const fee = await this.erc20_contract.methods.egressFee().call()
+        const fee = await this.erc20_contract().methods.egressFee().call()
         let tx = {
           from: this.address,
-          to: this.erc20_addr,
+          to: this.erc20_addr(),
           value: fee,
           gasPrice: this.gasPrice,
-          data: this.erc20_contract.methods.bridgeTransfer(this.addressEvm, this.transferValue, this.memo).encodeABI(),
+          data: this.erc20_contract().methods.bridgeTransfer(this.addressEvm, this.transferValue, this.memo).encodeABI(),
         }
 
         if (gaslimit != null) {
@@ -541,11 +528,11 @@ export default {
       try {
         this.submitting = true
 
-        if (!window.confirm(this.$t('home.transferConfirm', [this.amount, this.tokenName, this.targetAddress]))) {
+        if (!window.confirm(this.$t('home.transferConfirm', [this.amount, this.tokenName(), this.targetAddress]))) {
           return
         }
         this.gas = await this.web3.eth.estimateGas(await this.prepareTx(null));
-        if (this.tokenName != "EOS") {
+        if (this.tokenName() != "EOS") {
           this.gas = new BN(this.gas).mul(new BN(2)).toString()
         }
 
@@ -766,4 +753,5 @@ export default {
   border-right: 0.3em solid transparent;
   border-bottom: 0;
   border-left: 0.3em solid transparent;
-}</style>
+}
+</style>
