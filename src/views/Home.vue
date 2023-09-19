@@ -644,4 +644,8 @@ export default {
   color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
   cursor: pointer;
 }
+
+.error {
+  color:#fff;
+}
 </style>
