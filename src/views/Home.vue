@@ -754,4 +754,8 @@ export default {
   border-bottom: 0;
   border-left: 0.3em solid transparent;
 }
+
+.error {
+  color:#fff;
+}
 </style>
