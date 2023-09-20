@@ -362,9 +362,6 @@ export default {
       }
       this.gasPrice = await this.web3.eth.getGasPrice()
       this.gas = await this.web3.eth.estimateGas(await this.prepareTx(null));
-      if (this.tokenName() != "EOS") {
-        this.gas = new BN(this.gas).mul(new BN(2)).toString()
-      }
     },
 
     async checkChainID() {
@@ -532,9 +529,6 @@ export default {
           return
         }
         this.gas = await this.web3.eth.estimateGas(await this.prepareTx(null));
-        if (this.tokenName() != "EOS") {
-          this.gas = new BN(this.gas).mul(new BN(2)).toString()
-        }
 
         var vm = this
 
