@@ -73,7 +73,7 @@
                 <div class="mb-3">
                   <label for="address">{{ $t('home.destinationAccount') }}</label>
                   <div class="form-text mb-2">{{ $t('home.destinationAccountDesc') }}</div>
-                  <input type="text" id="address" class="form-control select" @change="calcFee" v-model="targetAddress"
+                  <input type="text" id="address" class="form-control select" v-model="targetAddress"
                     maxlength="13" list="addresses">
                   <div class="form-text font-monospace" v-if='extraWarning !== ""'>
                     <span style="color: red">{{ extraWarning }}</span>
@@ -109,7 +109,12 @@
 
           <div class="mt-2 text-center small text-white">
             {{ $t('home.gasFee') }}
-            <span v-if="transferFee">~{{ transferFee }}EOS</span>
+            <span v-if="tokenName() === 'EOS'">~0.0032 EOS</span>
+            <span v-else>~0.016 EOS</span>
+            <span v-if="tokenName() != 'EOS'">
+              <br>
+              {{ $t('home.bridgeFee') }} 0.01 EOS
+            </span>
             <br>
             {{ $t('home.transferTime', ['~5 s']) }}
             <br>
