@@ -255,7 +255,7 @@ export default {
       selectedToken: 0,
       tokenListTestnet: [
         { name: 'EOS', addr: '', logo: 'images/eos.png' },
-        { name: 'JUNGLE', addr: '0x4ea3b729669bF6C34F7B80E5D6c17DB71F89F21F', logo: 'images/jungle.svg', erc20_contract: null },
+        { name: 'JUNGLE', addr: '0x4ea3b729669bF6C34F7B80E5D6c17DB71F89F21F', logo: 'images/jungle.png', erc20_contract: null },
       ],
       tokenListMainnet: [
         { name: 'EOS', addr: '', logo: 'images/eos.png' },
