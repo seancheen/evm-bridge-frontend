@@ -154,7 +154,8 @@
               </span>
               <p>{{ $t('home.eos2evmDesc.p1') }}</p>
               <p>{{ $t('home.eos2evmDesc.p2') }}</p>
-              <p>{{ $t('home.eos2evmDesc.p3') }}</p>
+              <p v-if="env === 'TESTNET'">{{ $t('home.eos2evmDesc.p3.testnet') }}</p>
+              <p v-else>{{ $t('home.eos2evmDesc.p3.mainnet') }}</p>
             </div>
           </b-row>
         </b-card>
