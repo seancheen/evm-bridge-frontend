@@ -534,6 +534,7 @@ export default {
         if (!window.confirm(this.$t('home.transferConfirm', [this.amount, this.tokenName(), this.targetAddress]))) {
           return
         }
+        this.gasPrice = await this.web3.eth.getGasPrice();
         this.gas = await this.web3.eth.estimateGas(await this.prepareTx(null));
 
         var vm = this
