@@ -1189,6 +1189,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bn.js@npm:5.2.0":
+  version: 5.2.0
+  resolution: "bn.js@npm:5.2.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fbn.js%2F-%2Fbn.js-5.2.0.tgz"
+  checksum: 6117170393200f68b35a061ecbf55d01dd989302e7b3c798a3012354fa638d124f0b2f79e63f77be5556be80322a09c40339eda6413ba7468524c0b6d4b4cb7a
+  languageName: node
+  linkType: hard
+
 "bn.js@npm:^4.11.6, bn.js@npm:^4.11.9":
   version: 4.12.0
   resolution: "bn.js@npm:4.12.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fbn.js%2F-%2Fbn.js-4.12.0.tgz"
@@ -1921,6 +1928,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"enf-eosjs@npm:^23.0.0":
+  version: 23.0.0
+  resolution: "enf-eosjs@npm:23.0.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fenf-eosjs%2F-%2Fenf-eosjs-23.0.0.tgz"
+  dependencies:
+    bn.js: 5.2.0
+    elliptic: 6.5.4
+    hash.js: 1.1.7
+    node-fetch: 2.6.7
+  checksum: f66da068b7bd935cf314c2c30a442bb64cecb82e8024cac4d4bfb6cf4fc344f6d09e966bb41355a9a8c2b80e443590b8bb2cf01e331a693cd2418ac33ec14390
+  languageName: node
+  linkType: hard
+
 "env-paths@npm:^2.2.0":
   version: 2.2.1
   resolution: "env-paths@npm:2.2.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fenv-paths%2F-%2Fenv-paths-2.2.1.tgz"
@@ -2347,6 +2366,7 @@ __metadata:
     bootstrap: ^5.3.0
     bootstrap-vue-next: ^0.9.4
     clipboard.js: ^1.0.1
+    enf-eosjs: ^23.0.0
     eslint: ^8.42.0
     eslint-plugin-vue: ^9.14.1
     events: ^3.3.0
@@ -3844,6 +3864,20 @@ __metadata:
   dependencies:
     node-gyp: latest
   checksum: 31fb22d674648204f8dd94167eb5aac896c841b84a9210d614bf5d97c74ef059cc6326389cf0c54d2086e35312938401d4cc82e5fcd679202503eb8ac84814f8
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:2.6.7":
+  version: 2.6.7
+  resolution: "node-fetch@npm:2.6.7::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fnode-fetch%2F-%2Fnode-fetch-2.6.7.tgz"
+  dependencies:
+    whatwg-url: ^5.0.0
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: 8d816ffd1ee22cab8301c7756ef04f3437f18dace86a1dae22cf81db8ef29c0bf6655f3215cb0cdb22b420b6fe141e64b26905e7f33f9377a7fa59135ea3e10b
   languageName: node
   linkType: hard
 
