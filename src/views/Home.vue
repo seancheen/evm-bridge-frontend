@@ -235,9 +235,6 @@ import { Api, JsonRpc, RpcError } from 'enf-eosjs';
 const rpc = new JsonRpc('https://jungle4.api.eosnation.io:443', { fetch });
 const api = new Api({ rpc, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() });
 
-const blockList = ['eosbndeposit', 'gateiowallet', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos']
-const warningList = ['huobideposit', 'okbtothemoon']
-
 export default {
   name: 'home',
   inject: ['wallet', 'env'],
@@ -264,8 +261,14 @@ export default {
         { name: 'JUNGLE', addr: '0x4ea3b729669bF6C34F7B80E5D6c17DB71F89F21F', logo: 'images/jungle.png', erc20_contract: null },
       ],
       tokenListMainnet: [
-        { name: 'EOS', addr: '', logo: 'images/eos.png' },
-        { name: 'USDT', addr: '', logo: 'images/usdt.png' },
+        { name: 'EOS', addr: '', logo: 'images/eos.png', 
+        blockList:  ['eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos'], 
+        warningList: ['huobideposit', 'okbtothemoon', 'gateiowallet'] 
+      },
+        { name: 'USDT', addr: '', logo: 'images/usdt.png' , 
+        blockList:  ['eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos'], 
+        warningList: ['huobideposit', 'okbtothemoon', 'gateiowallet'] 
+      },
       ],
     }
   },
@@ -319,11 +322,11 @@ export default {
         return ''
       }
 
-      if (blockList.includes(this.targetAddress)) {
+      if (this.blockList()?.includes(this.targetAddress)) {
         return new Error(this.$t('home.cexNotSupported'))
       }
 
-      if (warningList.includes(this.targetAddress)) {
+      if (this.warningList()?.includes(this.targetAddress)) {
         this.extraWarning = this.$t('home.cexExtraWarning')
       } else {
         this.extraWarning = ''
@@ -361,6 +364,9 @@ export default {
     erc20_contract() { return this.tokenList[this.selectedToken].erc20_contract; },
     erc20_addr() { return this.tokenList[this.selectedToken].addr; },
     tokenName() { return this.tokenList[this.selectedToken].name; },
+
+    blockList() { return this.tokenList[this.selectedToken].blockList; },
+    warningList() { return this.tokenList[this.selectedToken].warningList; },
 
     async calcFee() {
       if (this.disableTransfer) {
