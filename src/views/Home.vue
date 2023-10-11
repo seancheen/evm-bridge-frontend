@@ -263,11 +263,11 @@ export default {
       tokenListMainnet: [
         { name: 'EOS', addr: '', logo: 'images/eos.png', 
         blockList:  ['eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos'], 
-        warningList: ['huobideposit', 'okbtothemoon', 'gateiowallet'] 
+        warningList: ['huobideposit', 'okbtothemoon', 'gateiowallet', 'coinbasebase', 'krakenkraken'] 
       },
         { name: 'USDT', addr: '', logo: 'images/usdt.png' , 
-        blockList:  ['eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos'], 
-        warningList: ['huobideposit', 'okbtothemoon', 'gateiowallet'] 
+        blockList:  ['eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'coinbasebase', 'krakenkraken', 'huobideposit', 'okbtothemoon'], 
+        warningList: ['gateiowallet'] 
       },
       ],
     }
@@ -323,6 +323,7 @@ export default {
       }
 
       if (this.blockList()?.includes(this.targetAddress)) {
+        this.extraWarning = ''
         return new Error(this.$t('home.cexNotSupported'))
       }
 
