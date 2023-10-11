@@ -2,7 +2,7 @@
 import { provide, reactive, ref, inject } from 'vue'
 import { RouterView } from 'vue-router'
 
-var env = location.host === 'bridge.evm.eosnetwork.com' ? 'MAINNET' : 'TESTNET'
+const env = inject('env')
 const i18n = inject('i18n')
 const wallet = reactive({
   connected: false,
