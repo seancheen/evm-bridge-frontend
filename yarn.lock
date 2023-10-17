@@ -669,12 +669,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lit-labs/ssr-dom-shim@npm:^1.1.2-pre.0":
+  version: 1.1.2
+  resolution: "@lit-labs/ssr-dom-shim@npm:1.1.2"
+  checksum: 73fd787893851d4ec4aaa5c775405ed2aae4ca0891b2dd3c973b32c2f4bf70ada5481dd0224e52b786d037aa8a00052186ad1623c44551affd66f6409cca8da6
+  languageName: node
+  linkType: hard
+
 "@lit/reactive-element@npm:^1.3.0, @lit/reactive-element@npm:^1.6.0":
   version: 1.6.3
   resolution: "@lit/reactive-element@npm:1.6.3"
   dependencies:
     "@lit-labs/ssr-dom-shim": ^1.0.0
   checksum: 79b58631c38effeabad090070324431da8a22cf0ff665f5e4de35e4d791f984742b3d340c9c7fce996d1124a8da95febc582471b4c237236c770b1300b56ef6e
+  languageName: node
+  linkType: hard
+
+"@lit/reactive-element@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@lit/reactive-element@npm:2.0.0"
+  dependencies:
+    "@lit-labs/ssr-dom-shim": ^1.1.2-pre.0
+  checksum: afa12f1cf72e8735cb7eaa51d428610785ee796882ca52108310e75ac54bbf5690da718c8bf85d042060f98c139ff0d5efd54f677a9d3fc4d794ad2e0f7a12c5
   languageName: node
   linkType: hard
 
@@ -1938,57 +1954,67 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@web3modal/core@npm:3.0.0-beta.4":
-  version: 3.0.0-beta.4
-  resolution: "@web3modal/core@npm:3.0.0-beta.4"
+"@web3modal/core@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@web3modal/core@npm:3.1.0"
   dependencies:
     valtio: 1.11.2
-  checksum: 83172aa528cec0e2d628fb15c138ab912a7c3f22624a9b9006befe02f761e8fcfe24b71ba3b9e480e6245cb320e18ba3971ebcf30d0202e0831c2b0e8eb4a907
+  checksum: 1179d4bd8be7d0354c4aa526a1c892ec31a16878192dcfc1831deef052e86912c919e04964ebd763f3d12f837627333cf7b01dbdbc8c7dfcd9cf9fd09fe56213
   languageName: node
   linkType: hard
 
-"@web3modal/polyfills@npm:3.0.0-beta.4":
-  version: 3.0.0-beta.4
-  resolution: "@web3modal/polyfills@npm:3.0.0-beta.4"
+"@web3modal/polyfills@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@web3modal/polyfills@npm:3.1.0"
   dependencies:
     buffer: 6.0.3
-  checksum: d587211cefce758ee2719f0527269052653f0575afa4c7f776da0b7ef555557f1877fd662da7c15aa151aae314be874e6a579b964a4442dc0c0feec9bdc4c435
+  checksum: 0a3b5a2ec5f45623d4712167536c9a40afd3f2c6715542b0844ad022f380e8ed45ee55d325ec4fb8716cfeccd224d240b1a4d52c17d0bc0c6cd13b9a693ac4cb
   languageName: node
   linkType: hard
 
-"@web3modal/scaffold@npm:3.0.0-beta.4":
-  version: 3.0.0-beta.4
-  resolution: "@web3modal/scaffold@npm:3.0.0-beta.4"
+"@web3modal/scaffold@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@web3modal/scaffold@npm:3.1.0"
   dependencies:
-    "@web3modal/core": 3.0.0-beta.4
-    "@web3modal/ui": 3.0.0-beta.4
-    lit: 2.8.0
-  checksum: 45573da44c024e7fcaefeeedf3767cd4c88ed172ede5da39d471ad9699cb340fa89dde5dbd429da91a5b14e35fb78fed768f5186099bbb5c5b72c20af84174d9
+    "@web3modal/core": 3.1.0
+    "@web3modal/ui": 3.1.0
+    lit: 3.0.0
+  checksum: 2b7b8cc05268dbb53241e28878bc84fb3a8a9b337799ac5927023d76c675990cdcff16271aa518373f6e2c649190fbcf3fc27a6ea499b8dd85130624064b1257
   languageName: node
   linkType: hard
 
-"@web3modal/ui@npm:3.0.0-beta.4":
-  version: 3.0.0-beta.4
-  resolution: "@web3modal/ui@npm:3.0.0-beta.4"
+"@web3modal/ui@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@web3modal/ui@npm:3.1.0"
   dependencies:
-    lit: 2.8.0
+    lit: 3.0.0
     qrcode: 1.5.3
-  checksum: 3792a56d0c3f6e122aa8e87179ad3ae7e0c7a5b9c7c4135e54c5baa16aebf04080effe1fef664de4b99469dd6ca55a02ab978e5d3152a3270732585c18edb836
+  checksum: f6c843d516584d0b543d731027202a2b0e384e4324fc318b2206c83b759520e0569f59114c5f8bfda92f3e44cf0b62b655b6a6ec9094da45852ee355b2b1428e
   languageName: node
   linkType: hard
 
-"@web3modal/wagmi@npm:beta":
-  version: 3.0.0-beta.4
-  resolution: "@web3modal/wagmi@npm:3.0.0-beta.4"
+"@web3modal/wagmi@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@web3modal/wagmi@npm:3.1.0"
   dependencies:
-    "@web3modal/polyfills": 3.0.0-beta.4
-    "@web3modal/scaffold": 3.0.0-beta.4
+    "@web3modal/polyfills": 3.1.0
+    "@web3modal/scaffold": 3.1.0
+    react: ">=17"
+    react-dom: ">=17"
+    vue: ">=3"
   peerDependencies:
     "@wagmi/core": ">=1"
     react: ">=17"
     react-dom: ">=17"
     viem: ">=1"
     vue: ">=3"
+  dependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+    vue:
+      optional: true
   peerDependenciesMeta:
     react:
       optional: true
@@ -1996,7 +2022,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 2e17ec773a4ef311bcd06166bbf7aa9e04b01400b6e0cdd476060c9ed737037b1c5e4f88ec92fedc0578465b20a20dc4ee4aa64c3436685d86abdbc65473a32d
+  checksum: b42df9d8115f8b2e2a406713c32c6145bcccf4f7f00883a9530fed643b529e4572ded6421b8fe1d03a0c71a4d2c5d5fde848c88737aabf04547e551bece46b93
   languageName: node
   linkType: hard
 
@@ -3711,7 +3737,7 @@ __metadata:
     "@popperjs/core": ^2.11.8
     "@vitejs/plugin-vue": ^4.2.3
     "@wagmi/core": ^1.4.2
-    "@web3modal/wagmi": beta
+    "@web3modal/wagmi": ^3.1.0
     bn.js: ^5.2.1
     bootstrap: ^5.3.0
     bootstrap-vue-next: ^0.9.4
@@ -4945,12 +4971,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lit-element@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "lit-element@npm:4.0.0"
+  dependencies:
+    "@lit-labs/ssr-dom-shim": ^1.1.2-pre.0
+    "@lit/reactive-element": ^2.0.0
+    lit-html: ^3.0.0
+  checksum: 788ea8ed0883d656583843dc4bbdfcb698f3a4c442a529bf861131e5741239e1076e8809e29b7733dccf6baea72a827aa3cccd444aca2ebe1dd04409608753f9
+  languageName: node
+  linkType: hard
+
 "lit-html@npm:^2.8.0":
   version: 2.8.0
   resolution: "lit-html@npm:2.8.0"
   dependencies:
     "@types/trusted-types": ^2.0.2
   checksum: 2d70df07248bcb2f502a3afb1e91d260735024fa669669ffb1417575aa39c3092779725ac1b90f5f39e4ce78c63f431f51176bc67f532389f0285a6991573255
+  languageName: node
+  linkType: hard
+
+"lit-html@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "lit-html@npm:3.0.0"
+  dependencies:
+    "@types/trusted-types": ^2.0.2
+  checksum: 1df6bc84a30b9f848962483f456fe820ddac0f836476af8e2e01e4388def21afc129631acde2ad29c761df724b932ddd4d5be87146d8e98c25bc049076f3e4b8
   languageName: node
   linkType: hard
 
@@ -4962,6 +5008,17 @@ __metadata:
     lit-element: ^3.3.0
     lit-html: ^2.8.0
   checksum: 2480e733f7d022d3ecba91abc58a20968f0ca8f5fa30b3341ecf4bcf4845e674ad27b721a5ae53529cafc6ca603c015b80d0979ceb7a711e268ef20bb6bc7527
+  languageName: node
+  linkType: hard
+
+"lit@npm:3.0.0":
+  version: 3.0.0
+  resolution: "lit@npm:3.0.0"
+  dependencies:
+    "@lit/reactive-element": ^2.0.0
+    lit-element: ^4.0.0
+    lit-html: ^3.0.0
+  checksum: 562e53d2902112f55949ff92244ab7a198abdd35455657e364f866954958b22f536f79c02f11a12f00f5b69799e28d4e27917fb120d7216491cb2a526b5ee718
   languageName: node
   linkType: hard
 
@@ -6150,7 +6207,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.2.0":
+"react-dom@npm:>=17":
+  version: 18.2.0
+  resolution: "react-dom@npm:18.2.0"
+  dependencies:
+    loose-envify: ^1.1.0
+    scheduler: ^0.23.0
+  peerDependencies:
+    react: ^18.2.0
+  checksum: 7d323310bea3a91be2965f9468d552f201b1c27891e45ddc2d6b8f717680c95a75ae0bc1e3f5cf41472446a2589a75aed4483aee8169287909fcd59ad149e8cc
+  languageName: node
+  linkType: hard
+
+"react@npm:>=17, react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
   dependencies:
@@ -6424,6 +6493,15 @@ __metadata:
   bin:
     sass: sass.js
   checksum: 65ccede83c96768beeb8dcaf67957b7c76b12ff1276bfd2849d7be151d46ba1400048a67717e6e5e4969bc75e87348e5530f5f272833f2e60a891c21a33d8ab0
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.23.0":
+  version: 0.23.0
+  resolution: "scheduler@npm:0.23.0"
+  dependencies:
+    loose-envify: ^1.1.0
+  checksum: d79192eeaa12abef860c195ea45d37cbf2bbf5f66e3c4dcd16f54a7da53b17788a70d109ee3d3dde1a0fd50e6a8fc171f4300356c5aee4fc0171de526bf35f8a
   languageName: node
   linkType: hard
 
@@ -7342,7 +7420,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^3.3.4":
+"vue@npm:>=3, vue@npm:^3.3.4":
   version: 3.3.4
   resolution: "vue@npm:3.3.4"
   dependencies:

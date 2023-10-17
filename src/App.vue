@@ -1,7 +1,7 @@
 <script setup>
-import { provide, reactive, ref, inject } from 'vue'
+import { provide, reactive, ref, inject, watch } from 'vue'
 import { RouterView } from 'vue-router'
-import { createWeb3Modal, defaultWagmiConfig, useWeb3Modal } from '@web3modal/wagmi/vue'
+import { createWeb3Modal, defaultWagmiConfig, useWeb3Modal, useWeb3ModalEvents } from '@web3modal/wagmi/vue'
 import { eos, eosTestnet } from 'viem/chains'
 
 
@@ -27,12 +27,20 @@ const selectLang = (val) => {
   const projectId = '12d2503c58f46ada41000bde1e0d0b7a'
 
   // 2. Create wagmiConfig
-  const chains = [eos, eosTestnet]
+  const chains = [env === 'MAINNET' ? eos : eosTestnet]
   const wagmiConfig = defaultWagmiConfig({ chains, projectId, appName: 'Web3Modal' })
 
   // 3. Create modal
   createWeb3Modal({ wagmiConfig, projectId, chains })
 
+  const events = useWeb3ModalEvents();
+  watch(events, async (newVal,oldVal)=> {
+    if (newVal.data.event == 'CONNECT_ERROR' && newVal.data.properties.message == 'Requested chains are not supported') {
+      if (window.confirm('Requested chains are not supported in your wallet. Please check the docs about how to add the chain to the wallet. \nClick OK to go to the help page.')) {
+        window.open("https://docs.eosnetwork.com/evm/quick-start/introduction", "_self");
+        }
+    }
+  });
 </script>
 
 <template>
