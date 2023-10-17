@@ -31,7 +31,22 @@ const selectLang = (val) => {
   const wagmiConfig = defaultWagmiConfig({ chains, projectId, appName: 'Web3Modal' })
 
   // 3. Create modal
-  createWeb3Modal({ wagmiConfig, projectId, chains })
+  createWeb3Modal({ wagmiConfig, projectId, chains ,
+    chainImages: {
+    15557: '/images/eos.png',
+    17777: '/images/eos.png',
+  },
+    themeVariables: {
+    //'--w3m-color-mix': '#00BB7F',
+    //'--w3m-color-mix-strength': 40,
+    '--w3m-font-family': '"sfmoma", sans-serif',
+    //'--w3m-accent':,
+    //'--w3m-font-size-master':,
+    '--w3m-border-radius-master':'1px',
+    //'--w3m-z-index':,
+
+  }
+})
 
   const events = useWeb3ModalEvents();
   watch(events, async (newVal,oldVal)=> {
@@ -65,7 +80,7 @@ const selectLang = (val) => {
             </template>
             <b-dropdown-item @click="selectLang(k)" v-for="(v, k) in langs" :key="k">{{v}}</b-dropdown-item>
           </b-nav-item-dropdown>
-          <w3m-button balance="false" />
+          <w3m-button balance="hide"/>
         </b-navbar-nav>
       </b-navbar>
     </div>
