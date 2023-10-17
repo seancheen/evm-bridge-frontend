@@ -229,20 +229,20 @@ import BN from 'bn.js'
 import clipboardCopy from '../utils/copy-text'
 import erc20_abi from '../erc20.json'
 
-import { Api, JsonRpc, RpcError } from 'enf-eosjs';
+import { JsonRpc, RpcError } from 'enf-eosjs';
+
 
 import { getAccount, fetchBalance, getContract, fetchFeeData, sendTransaction, getPublicClient, getWalletClient, fetchTransaction, waitForTransaction, writeContract, disconnect, watchAccount, watchNetwork, switchNetwork, getNetwork } from '@wagmi/core'
 import { compileScript } from 'vue/compiler-sfc';
 
 
-const rpc = new JsonRpc('https://jungle4.api.eosnation.io:443', { fetch });
-const api = new Api({ rpc, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() });
 
 export default {
   name: 'home',
   inject: ['wallet', 'env'],
   data() {
     return {
+      rpc: null,
       address: '',
       balance: '',
       memo: '',
@@ -268,7 +268,7 @@ export default {
         blockList:  ['eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos'], 
         warningList: ['huobideposit', 'okbtothemoon', 'gateiowallet', 'coinbasebase', 'krakenkraken'] 
       },
-        { name: 'USDT', addr: '0x4ea3b729669bF6C34F7B80E5D6c17DB71F89F21F', logo: 'images/usdt.png' , 
+        { name: 'USDT', addr: '0x33B57dC70014FD7AA6e1ed3080eeD2B619632B8e', logo: 'images/usdt.png' , 
         blockList:  ['eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'coinbasebase', 'krakenkraken', 'huobideposit', 'okbtothemoon'], 
         warningList: ['gateiowallet'] 
       },
@@ -277,8 +277,8 @@ export default {
   },
   created() {
 
-
-    //this.wallet.connect = this.connectWallet
+    this.rpc = (this.env === "TESTNET" ? new JsonRpc('https://jungle4.api.eosnation.io:443', { fetch }) : new JsonRpc('https://eos.api.eosnation.io:443', { fetch }));
+    // this.wallet.connect = this.connectWallet
 
 
     this.tokenList = this.env === "TESTNET" ? this.tokenListTestnet : this.tokenListMainnet;
@@ -495,7 +495,7 @@ export default {
         var hash = blockinfo.mixHash.slice(2)
 
         // Fetch EOS block, we do not use the function provided by the package as it miss fields in the return value.
-        var r = await rpc.fetch('/v1/chain/get_block', { block_num_or_id: hash })
+        var r = await vm.rpc.fetch('/v1/chain/get_block', { block_num_or_id: hash })
         // EOS tx id is the result.transactions.trx.id
         // EVM tx is in eos_block.transactions.trx.transaction.actions[n]
         // There should be only one action in each eos transaction for those EVM transactions.
@@ -516,7 +516,7 @@ export default {
         // but for the frontend display, hardcoded two queries should be fine. 
         // We can make the logic more general and more robust if necessary.
         if (txs.length == 0) {
-          var r2 = await rpc.fetch('/v1/chain/get_block', { block_num_or_id: r.previous })
+          var r2 = await vm.rpc.fetch('/v1/chain/get_block', { block_num_or_id: r.previous })
 
           txs = r2.transactions.map((t) => {
             if (t.trx.transaction != undefined) {
