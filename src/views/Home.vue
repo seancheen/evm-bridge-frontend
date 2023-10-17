@@ -373,10 +373,8 @@ export default {
     blockList() { return this.tokenList[this.selectedToken].blockList; },
     warningList() { return this.tokenList[this.selectedToken].warningList; },
 
-    async calcFee() {
-      if (this.disableTransfer) {
-        return
-      }
+    async getPrice() {
+
       const feeData = await fetchFeeData({
         formatUnits: 'wei',
       })
@@ -462,6 +460,8 @@ export default {
         var vm = this
 
         let tx = null;
+        
+        await this.getPrice()
 
         if (this.tokenName() === 'EOS') {
           tx = await sendTransaction({
