@@ -36,11 +36,12 @@ const selectLang = (val) => {
     15557: '/images/eos.png',
     17777: '/images/eos.png',
   },
+  themeMode: 'light',
     themeVariables: {
     //'--w3m-color-mix': '#00BB7F',
     //'--w3m-color-mix-strength': 40,
     '--w3m-font-family': '"sfmoma", sans-serif',
-    //'--w3m-accent':,
+    '--w3m-accent':'#1E94E6',
     //'--w3m-font-size-master':,
     '--w3m-border-radius-master':'1px',
     //'--w3m-z-index':,
