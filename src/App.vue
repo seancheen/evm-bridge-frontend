@@ -4,6 +4,7 @@ import { RouterView } from 'vue-router'
 import { createWeb3Modal, defaultWagmiConfig, useWeb3Modal, useWeb3ModalEvents } from '@web3modal/wagmi/vue'
 import { eos, eosTestnet } from 'viem/chains'
 
+const missingNetworkModal = ref(false)
 
 const env = inject('env')
 const i18n = inject('i18n')
@@ -52,15 +53,14 @@ const selectLang = (val) => {
   const events = useWeb3ModalEvents();
   watch(events, async (newVal,oldVal)=> {
     if (newVal.data.event == 'CONNECT_ERROR' && newVal.data.properties.message == 'Requested chains are not supported') {
-      if (window.confirm('Requested chains are not supported in your wallet. Please check the docs about how to add the chain to the wallet. \nClick OK to go to the help page.')) {
-        window.open("https://docs.eosnetwork.com/evm/quick-start/introduction", "_self");
-        }
+      missingNetworkModal.value = true;
     }
   });
 </script>
 
 <template>
   <header>
+    
     <div class="container">
       <b-navbar dark toggleable="sm">
         <a class="navbar-brand" href="">
@@ -86,7 +86,33 @@ const selectLang = (val) => {
       </b-navbar>
     </div>
   </header>
+  <BModal v-model="missingNetworkModal" okOnly="true" title="Missing Network in Wallet!" style="display: block"> 
+    <p>We've detected that the wallet you are attempting to use has not been configured to support EOS EVM. </p>
+    <p>Please use the following network information to add the network or visit <a href="https://docs.eosnetwork.com/evm/quick-start/introduction" >our documentation page</a> for more details. </p>
+    
+    <details><summary><b>Mainnet</b></summary><p dir="auto">
+    </p><ul dir="auto">
+    <li>Network Name: EOS EVM</li>
+    <li>Chain ID: 17777</li>
+    <li>New RPC URL: <a href="https://api.evm.eosnetwork.com/" rel="nofollow">https://api.evm.eosnetwork.com/</a></li>
+    <li>Currency Symbol: EOS</li>
+    <li>Block Explorer URL (Optional): <a href="https://explorer.evm.eosnetwork.com/" rel="nofollow">https://explorer.evm.eosnetwork.com/</a></li>
+    <li>Token Bridge: <a href="https://bridge.evm.eosnetwork.com/" rel="nofollow">https://bridge.evm.eosnetwork.com/</a></li>
+    </ul>
+    <p dir="auto"></p></details>
 
+    <details><summary><b>Testnet</b></summary><p dir="auto">
+    </p><ul dir="auto">
+    <li>Network Name: EOS EVM Testnet</li>
+    <li>Chain ID: 15557</li>
+    <li>New RPC URL: <a href="https://api.testnet.evm.eosnetwork.com/" rel="nofollow">https://api.testnet.evm.eosnetwork.com/</a></li>
+    <li>Currency Symbol: EOS</li>
+    <li>Block Explorer URL (Optional): <a href="https://explorer.testnet.evm.eosnetwork.com/" rel="nofollow">https://explorer.testnet.evm.eosnetwork.com/</a></li>
+    <li>Token Bridge: <a href="https://bridge.testnet.evm.eosnetwork.com/" rel="nofollow">https://bridge.testnet.evm.eosnetwork.com/</a></li>
+    </ul>
+    <p dir="auto"></p></details>
+
+  </BModal>
   <RouterView class="main"/>
 
   <footer>
@@ -136,6 +162,7 @@ const selectLang = (val) => {
 </template>
 
 <script>
+
 export default {
   name: 'app',
   inject: ['wallet', 'env'],
