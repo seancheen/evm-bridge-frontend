@@ -29,7 +29,15 @@ const selectLang = (val) => {
 
   // 2. Create wagmiConfig
   const chains = [env === 'MAINNET' ? eos : eosTestnet]
-  const wagmiConfig = defaultWagmiConfig({ chains, projectId, appName: 'Web3Modal' })
+  const wagmiConfig = defaultWagmiConfig({ chains, projectId, appName: 'Web3Modal' ,
+  metadata: {
+    name: 'EOS EVM',
+    description: 'EOS EVM',
+    url: 'https://eosnetwork.com',
+    icons: ['https://bridge.evm.eosnetwork.com/images/eos.png']
+  },
+  rpcUrl: env === 'MAINNET' ? 'https://api.evm.eosnetwork.com' : 'https://api.testnet.evm.eosnetwork.com',
+})
 
   // 3. Create modal
   createWeb3Modal({ wagmiConfig, projectId, chains ,
