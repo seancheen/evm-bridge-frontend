@@ -75,3 +75,7 @@ a.disabled {
 .modal-dialog {
   z-index: inherit;
 }
+
+.modal.show{
+  display: block;
+}
