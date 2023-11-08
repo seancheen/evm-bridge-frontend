@@ -65,7 +65,7 @@ const messages = {
     'footer.copyright': '© 2023 EOS Network Foundation all rights reserved.',
 
     'app.walletconnect.failedswitch.title': 'Missing Network Configuration in Wallet',
-    'app.walletconnect.failedswitch.content': `<p>We've detected that the wallet you are attempting to use has not been configured to support EOS EVM yet. Please use the following network information to add the network or visit our <a href="https://docs.eosnetwork.com/evm/quick-start/setup-metamask/" >documentation</a> page for more details.</p>
+    'app.walletconnect.failedswitch.content': `<p>We've detected that the wallet you are attempting to use has not been configured to support EOS EVM yet. Please use the following network information to add the network or visit our <a href="https://docs.eosnetwork.com/evm/quick-start/setup-metamask/" target="_blank" rel="noopener noreferrer" >documentation</a> page for more details.</p>
     <details><summary><b>Mainnet</b></summary><p dir="auto">
     </p><ul dir="auto">
     <li>Network Name: EOS EVM</li>
@@ -155,7 +155,7 @@ const messages = {
     'footer.copyright': '© 2023 EOS 네트워크 재단 판권 소유.',
 
     'app.walletconnect.failedswitch.title': '지갑에 네트워크 구성이 누락되었습니다',
-    'app.walletconnect.failedswitch.content': `<p>귀하가 사용하려는 지갑이 아직 EOS EVM을 지원하지 않은 것으로 확인되었습니다. 다음 네트워크 정보를 이용하여 네트워크를 추가하거나 <a href="https://docs.eosnetwork.com/ko/evm/quick-start/setup-metamask/" >문서 페이지</a> 를 방문하여 자세한 내용을 확인해 보시기 바랍니다.</p>
+    'app.walletconnect.failedswitch.content': `<p>귀하가 사용하려는 지갑이 아직 EOS EVM을 지원하지 않은 것으로 확인되었습니다. 다음 네트워크 정보를 이용하여 네트워크를 추가하거나 <a href="https://docs.eosnetwork.com/ko/evm/quick-start/setup-metamask/" target="_blank" rel="noopener noreferrer">문서 페이지</a> 를 방문하여 자세한 내용을 확인해 보시기 바랍니다.</p>
     <details><summary><b>메인넷</b></summary><p dir="auto">
     </p><ul dir="auto">
     <li>네트워크 이름: EOS EVM</li>
@@ -245,7 +245,7 @@ const messages = {
     'footer.copyright': '© 2023 EOS 网络基金会保留所有权利。',
 
     'app.walletconnect.failedswitch.title': '钱包中缺失网络配置',
-    'app.walletconnect.failedswitch.content': `<p>我们检测到您尝试使用的钱包尚未配置以支持EOS EVM。请使用以下网络信息添加网络，或访问我们的<a href="https://docs.eosnetwork.com/zh/evm/quick-start/setup-metamask/" >文档页面</a>获取更多详细信息。</p>
+    'app.walletconnect.failedswitch.content': `<p>我们检测到您尝试使用的钱包尚未配置以支持EOS EVM。请使用以下网络信息添加网络，或访问我们的<a href="https://docs.eosnetwork.com/zh/evm/quick-start/setup-metamask/" target="_blank" rel="noopener noreferrer">文档页面</a>获取更多详细信息。</p>
     <details><summary><b>主网</b></summary><p dir="auto">
     </p><ul dir="auto">
     <li>网络名称: EOS EVM</li>
