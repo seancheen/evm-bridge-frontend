@@ -26,7 +26,7 @@ app.provide('wallet', wallet)
 
 
 app.component('Fa', Fa)
-app.provide('env', location.host === 'bridge.evm.eosnetwork.com' ? 'MAINNET' : 'TESTNET')
+app.provide('env', location.search === '?forceMainnet' ? 'MAINNET' : location.host === 'bridge.evm.eosnetwork.com' ? 'MAINNET' : 'TESTNET')
 app.provide('i18n', i18n)
 
 app.mount('#app')
