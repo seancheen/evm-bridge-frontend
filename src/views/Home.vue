@@ -476,7 +476,7 @@ export default {
     async transfer() {
       try {
         this.submitting = true
-
+        this.transactionError = ''
         if (!window.confirm(this.$t('home.transferConfirm', [this.amount, this.tokenName(), this.targetAddress]))) {
           return
         }
