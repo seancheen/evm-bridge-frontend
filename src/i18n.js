@@ -47,7 +47,7 @@ const messages = {
     'home.eos2evmDesc.p1': 'Please use a wallet that supports the EOS Network, such as Anchor, Wombat, TokenPocket or a centralized exchange such as OKX, Coinbase, etc.',
     'home.eos2evmDesc.p2': 'To transfer funds to the following EOS Contract Address, please fill in the Destination EOS EVM Address in the memo to complete the deposit to EOS EVM.',
     'home.eos2evmDesc.p3.testnet': 'Officially supported tokens include EOS and JUNGLE at this time.',
-    'home.eos2evmDesc.p3.mainnet': 'Officially supported tokens include EOS and USDT (EOS) at this time.',
+    'home.eos2evmDesc.p3.mainnet': 'Officially supported tokens include EOS, USDT, SEOS, BOX and USN at this time.',
 
     'home.addressCheck.invalidAddress': 'Address includes an illegal character',
     'home.addressCheck.invalid13Char': 'Invalid 13th character',
@@ -137,7 +137,7 @@ const messages = {
     'home.eos2evmDesc.p1': 'Anchor, Wombat, TokenPocket 등 EOS 네트워크를 지원하는 지갑 또는 OKX, Coinbase 등과 같은 중앙화 거래소를 사용해 주세요.',
     'home.eos2evmDesc.p2': '다음 EOS 컨트랙트 주소로 자금을 이체하려면 메모에 목적지 EOS EVM 주소를 입력하여 EOS EVM에 입금을 완료하세요.',
     'home.eos2evmDesc.p3.testnet': '현재 공식적으로 지원되는 토큰은 EOS와 JUNGLE 입니다.',
-    'home.eos2evmDesc.p3.mainnet': '현재 공식적으로 지원되는 토큰은 EOS와 USDT(EOS)입니다.',
+    'home.eos2evmDesc.p3.mainnet': '현재 공식적으로 지원되는 토큰은 EOS, USDT, SEOS, BOX와 USN입니다.',
 
     'home.addressCheck.invalidAddress': '주소에 잘못된 문자가 포함되어 있습니다.',
     'home.addressCheck.invalid13Char': '최대 문자 초과, 13개 이상을 넘을 수 없습니다.',
@@ -227,7 +227,7 @@ const messages = {
     'home.eos2evmDesc.p1':'请使用支持 EOS 网络的钱包，如 Anchor、Wombat、TokenPocket 或中心化交易所如 OKX、Coinbase 等。',
     'home.eos2evmDesc.p2': '如需转账至以下 EOS 合约地址，请在 memo 中填写目标 EOS EVM 地址，以完成向 EOS EVM 的充值。',
     'home.eos2evmDesc.p3.testnet': '目前官方支持的代币包括 EOS 和 JUNGLE。',
-    'home.eos2evmDesc.p3.mainnet': '目前官方支持的代币包括 EOS和 USDT(EOS)。',
+    'home.eos2evmDesc.p3.mainnet': '目前官方支持的代币包括 EOS, USDT, SEOS, BOX 和 USN。',
 
     'home.addressCheck.invalidAddress': '地址包含违规字符',
     'home.addressCheck.invalid13Char': '第 13 个字符无效',
