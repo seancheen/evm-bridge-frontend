@@ -113,7 +113,7 @@
             <span v-else>~0.016 EOS</span>
             <span v-if="tokenName() != 'EOS'">
               <br>
-              {{ $t('home.bridgeFee') }} 0.01 EOS
+              {{ $t('home.bridgeFee') }} {{ egressFeeInEOS() }} EOS
             </span>
             <br>
             {{ $t('home.transferTime', ['~5 s']) }}
@@ -259,6 +259,7 @@ export default {
       extraWarning: '',
       tokenList: null,
       selectedToken: 0,
+      egressFee: '0',
       tokenListTestnet: [
         { name: 'EOS', addr: '', logo: 'images/eos.png' },
         { name: 'JUNGLE', addr: '0x4ea3b729669bF6C34F7B80E5D6c17DB71F89F21F', logo: 'images/jungle.png', erc20_contract: null },
@@ -395,6 +396,10 @@ export default {
 
     },
 
+    egressFeeInEOS() {
+      return Web3.utils.fromWei(this.egressFee);
+    },
+
     async checkChainID(network) {
       if (!network || !network.chain) {
         return
@@ -435,8 +440,15 @@ export default {
 
     },
 
-    onSelectToken(index) {
+    async onSelectToken(index) {
       this.selectedToken = index;
+      if (this.erc20_contract()) {
+        this.egressFee = (await this.erc20_contract().read.egressFee()).toString()
+      }
+      else {
+        this.egressFee = '0'
+      }
+      
       this.getBalance()
     },
 
@@ -464,7 +476,7 @@ export default {
     async transfer() {
       try {
         this.submitting = true
-
+        this.transactionError = ''
         if (!window.confirm(this.$t('home.transferConfirm', [this.amount, this.tokenName(), this.targetAddress]))) {
           return
         }
@@ -485,7 +497,7 @@ export default {
           })
         }
         else {
-          // USDT
+          // Always fetch fee again.
           const fee = (await this.erc20_contract().read.egressFee()).toString()
 
           tx = await writeContract({

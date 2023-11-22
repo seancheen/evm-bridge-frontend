@@ -84,7 +84,7 @@ const selectLang = (val) => {
             </template>
             <b-dropdown-item @click="selectLang(k)" v-for="(v, k) in langs" :key="k">{{v}}</b-dropdown-item>
           </b-nav-item-dropdown>
-          <w3m-button balance="hide"/>
+          <w3m-button class="w3m-btn" balance="hide"/>
         </b-navbar-nav>
       </b-navbar>
     </div>
@@ -217,4 +217,9 @@ footer {
     font-weight: bold;
   }
 }
+
+.w3m-btn:hover {
+  --wui-color-inverse-100: #000;
+}
+
 </style>
