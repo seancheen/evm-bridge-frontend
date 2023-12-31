@@ -3,6 +3,7 @@ import { provide, reactive, ref, inject, watch } from 'vue'
 import { RouterView } from 'vue-router'
 import { createWeb3Modal, defaultWagmiConfig, useWeb3Modal, useWeb3ModalEvents } from '@web3modal/wagmi/vue'
 import { eos, eosTestnet } from 'viem/chains'
+import {eesrWagmiConfig} from "./plugins/eesrWagmiCoreConfig";
 
 
 
@@ -29,7 +30,7 @@ const selectLang = (val) => {
 
   // 2. Create wagmiConfig
   const chains = [env === 'MAINNET' ? eos : eosTestnet]
-  const wagmiConfig = defaultWagmiConfig({ chains, projectId, appName: 'Web3Modal' ,
+const wagmiConfig = eesrWagmiConfig({ chains, projectId, appName: 'Web3Modal',
   metadata: {
     name: 'EOS EVM',
     description: 'EOS EVM',
@@ -58,12 +59,12 @@ const selectLang = (val) => {
   }
 })
 
-  
+
 </script>
 
 <template>
   <header>
-    
+
     <div class="container">
       <b-navbar dark toggleable="sm">
         <a class="navbar-brand" href="">
@@ -89,7 +90,7 @@ const selectLang = (val) => {
       </b-navbar>
     </div>
   </header>
-  <BModal v-model="missingNetworkModal" okOnly="true"  :okTitle="$t('app.walletconnect.failedswitch.ok')" :title="$t('app.walletconnect.failedswitch.title')"> 
+  <BModal v-model="missingNetworkModal" okOnly="true"  :okTitle="$t('app.walletconnect.failedswitch.ok')" :title="$t('app.walletconnect.failedswitch.title')">
     <div v-html="$t('app.walletconnect.failedswitch.content', { 'interpolation': {'escapeValue': false} })"></div>
   </BModal>
   <RouterView class="main"/>
@@ -148,7 +149,7 @@ export default {
   mounted() {
     this.wallet.connect = useWeb3Modal()
     const events = useWeb3ModalEvents();
-    
+
     watch(events, async (newVal,oldVal)=> {
       if (newVal.data.event == 'CONNECT_ERROR' && newVal.data.properties.message == 'Requested chains are not supported') {
         missingNetworkModal.value = true;
