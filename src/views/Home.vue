@@ -364,7 +364,7 @@ export default {
           return Web3.utils.toBN(Web3.utils.toWei(this.amount.toString(), 'ether')).toString()
         }
         else {
-          return Web3.utils.toBN(Web3.utils.toWei(this.amount.toString(), 'mwei')).toString()
+          return Web3.utils.toBN(Web3.utils.toWei(this.amount.toString(), 'wei')).toString()
         }
       } catch (err) {
         return null
@@ -507,11 +507,12 @@ export default {
           // Always fetch fee again.
           const fee = (await this.erc20_contract().read.egressFee()).toString()
 
+          console.log(`this.transferValue=${this.transferValue}`)
           tx = await writeContract({
             address: this.erc20_addr(),
             abi: erc20_abi,
-            functionName: 'bridgeTransfer',
-            args: [this.addressEvm, this.transferValue, this.memo],
+            functionName: 'transfer',
+            args: [this.addressEvm, this.transferValue],
             value: fee
           })
 

@@ -47,10 +47,10 @@
     stream-browserify "^3.0.0"
     util "^0.12.4"
 
-"@eoslabs/eesr@^1.0.91":
-  version "1.0.91"
-  resolved "http://100.25.153.243:4873/@eoslabs/eesr/-/eesr-1.0.91.tgz"
-  integrity sha512-4mHO7vReT5FQX/FCvoMHr6Yebhv9SNF2g6jm6kuy3n7nidEP6NMkN2GKCi3BudMfsZY6ljJr44KKvi9Z/P1KJg==
+"@eoslabs/eesr@^1.0.92":
+  version "1.0.92"
+  resolved "http://100.25.153.243:4873/@eoslabs/eesr/-/eesr-1.0.92.tgz"
+  integrity sha512-kJeFvSYfdXIoA6YN/9BB5ixcHo1nMaToQ2iVPk6DHzbSTJiI/gnrVfkr70amRh0UXETTFPNClztPajXmRgS1DA==
   dependencies:
     "@walletconnect/modal" "^2.6.2"
     axios "^1.2.1"
