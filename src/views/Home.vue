@@ -263,31 +263,33 @@ export default {
       tokenListTestnet: [
         { name: 'EOS', addr: '', logo: 'images/eos.png' },
         { name: 'JUNGLE', addr: '0x4ea3b729669bF6C34F7B80E5D6c17DB71F89F21F', logo: 'images/jungle.png', erc20_contract: null },
+        { name: 'SEAN', addr: '0x292E8172C9987782DbB1F0a4c57DC2dE74cC1444', logo: 'images/jungle.png', erc20_contract: null },
       ],
       tokenListMainnet: [
-        { name: 'EOS', addr: '', logo: 'images/eos.png', 
-        blockList:  ['eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos'], 
-        warningList: ['huobideposit', 'okbtothemoon', 'gateiowallet', 'coinbasebase', 'krakenkraken'] 
+        { name: 'EOS', addr: '', logo: 'images/eos.png',
+        blockList:  ['eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos'],
+        warningList: ['huobideposit', 'okbtothemoon', 'gateiowallet', 'coinbasebase', 'krakenkraken']
       },
-        { name: 'USDT', addr: '0x33B57dC70014FD7AA6e1ed3080eeD2B619632B8e', logo: 'images/usdt.png' , 
-        blockList:  ['eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'coinbasebase', 'krakenkraken', 'huobideposit', 'okbtothemoon'], 
-        warningList: ['gateiowallet'] 
+        { name: 'USDT', addr: '0x33B57dC70014FD7AA6e1ed3080eeD2B619632B8e', logo: 'images/usdt.png' ,
+        blockList:  ['eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'coinbasebase', 'krakenkraken', 'huobideposit', 'okbtothemoon'],
+        warningList: ['gateiowallet']
       },
-      { name: 'SEOS', addr: '0xbfb10f85b889328e4a42507e31a07977ae00eec6', logo: 'images/seos.png' , 
-        blockList:  ['gateiowallet', 'eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'coinbasebase', 'krakenkraken', 'huobideposit', 'okbtothemoon'], 
-        warningList: [] 
+      { name: 'SEOS', addr: '0xbfb10f85b889328e4a42507e31a07977ae00eec6', logo: 'images/seos.png' ,
+        blockList:  ['gateiowallet', 'eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'coinbasebase', 'krakenkraken', 'huobideposit', 'okbtothemoon'],
+        warningList: []
       },
-      { name: 'BOX', addr: '0x9b3754f036de42846e60c8d8c89b18764f168367', logo: 'images/box.png' , 
-        blockList:  ['gateiowallet', 'eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'coinbasebase', 'krakenkraken', 'huobideposit', 'okbtothemoon'], 
-        warningList: [] 
+      { name: 'BOX', addr: '0x9b3754f036de42846e60c8d8c89b18764f168367', logo: 'images/box.png' ,
+        blockList:  ['gateiowallet', 'eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'coinbasebase', 'krakenkraken', 'huobideposit', 'okbtothemoon'],
+        warningList: []
       },
-      { name: 'USN', addr: '0x8d0258d6ccfb0ce394dc542c545566936b7974f9', logo: 'images/usn.png' , 
-        blockList:  ['gateiowallet', 'eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'coinbasebase', 'krakenkraken', 'huobideposit', 'okbtothemoon'], 
-        warningList: [] 
+      { name: 'USN', addr: '0x8d0258d6ccfb0ce394dc542c545566936b7974f9', logo: 'images/usn.png' ,
+        blockList:  ['gateiowallet', 'eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'coinbasebase', 'krakenkraken', 'huobideposit', 'okbtothemoon'],
+        warningList: []
       },
       ],
     }
   },
+
   created() {
 
     this.rpc = (this.env === "TESTNET" ? new JsonRpc('https://jungle4.api.eosnation.io:443', { fetch }) : new JsonRpc('https://eos.api.eosnation.io:443', { fetch }));
@@ -303,6 +305,7 @@ export default {
           address: item.addr,
           abi: erc20_abi,
         })
+        console.log(`item.erc20_contract=${item.erc20_contract}`)
       }
     }
     const account = getAccount()
@@ -432,8 +435,11 @@ export default {
       }
       else {
         if ((this.erc20_contract())) {
+          console.log(`contract address=${this.erc20_contract().address}`)
+          console.log(`address=${address}`)
           const wei = new BN((await this.erc20_contract().read.balanceOf([address])).toString())
-          this.balance = Web3.utils.fromWei(wei, 'mwei')
+          console.log(`balance  wei = ${wei}`)
+          this.balance = Web3.utils.fromWei(wei, 'ether')
         }
         else { this.balance = null; }
       }
@@ -444,11 +450,12 @@ export default {
       this.selectedToken = index;
       if (this.erc20_contract()) {
         this.egressFee = (await this.erc20_contract().read.egressFee()).toString()
+        console.log(`this.egressFee=${this.egressFee}`)
       }
       else {
         this.egressFee = '0'
       }
-      
+
       this.getBalance()
     },
 
@@ -484,7 +491,7 @@ export default {
         var vm = this
 
         let tx = null;
-        
+
         await this.getPrice()
 
         if (this.tokenName() === 'EOS') {
@@ -537,7 +544,7 @@ export default {
         // One EVM block will cover one second of time. So there will be two EOS blocks.
         // If we cannot find the tx in the block located by the mixHash, try the previous one.
         // It's in theory possible to have more than or less than two EOS blocks related to one EVM block,
-        // but for the frontend display, hardcoded two queries should be fine. 
+        // but for the frontend display, hardcoded two queries should be fine.
         // We can make the logic more general and more robust if necessary.
         if (txs.length == 0) {
           var r2 = await vm.rpc.fetch('/v1/chain/get_block', { block_num_or_id: r.previous })
